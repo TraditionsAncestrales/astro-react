@@ -1,4 +1,4 @@
-import { type HelpersFromOpts, helpersFrom, select } from "zod-pocketbase";
+import { type HelpersFromOpts, helpersFrom, select } from "astro-pocketbase";
 
 import {
   zConfigRecord,
@@ -27,7 +27,7 @@ export async function getLayoutRecords(opts: HelpersFromOpts) {
   const zKnowledge = select(zKnowledgesRecord, ["name", "slug", "text"], { image: zImage });
   const zPost = select(zPostsRecord, ["excerpt", "slug", "title"], { image: zImage, knowledge: zKnowledgeSlug });
 
-  const [config, knowledges, organizationPost] = await Promise.all([
+  const [config, { items: knowledges }, organizationPost] = await Promise.all([
     getRecord({ collection: "config", id: "fedcba987654321" }, { schema: zConfig }),
     getRecords("knowledges", { schema: zKnowledge }),
     getRecord({ collection: "posts", slug: "l-association" }, { schema: zPost }),
@@ -40,7 +40,7 @@ export async function getLayoutRecords(opts: HelpersFromOpts) {
 export async function getKnowledgePageEntriesRecords(opts: HelpersFromOpts) {
   const { getRecords } = helpersFrom(opts);
 
-  const knowledges = await getRecords("knowledges", { schema: zKnowledgeSlug });
+  const { items: knowledges } = await getRecords("knowledges", { schema: zKnowledgeSlug });
 
   return { knowledges };
 }
@@ -73,10 +73,10 @@ export async function getKnowledgePageRecords(knowledge: string, opts: HelpersFr
 
   const zTestimony = select(zTestimoniesRecord, ["author", "text", "title"]);
 
-  const [events, page, testimonies] = await Promise.all([
+  const [{ items: events }, page, { items: testimonies }] = await Promise.all([
     getRecords("events", { schema: zEvent, filter: eventFilter }),
     getRecord({ collection: "pages", slug: knowledge }, { schema: zPage }),
-    knowledge === "traditions-ancestrales" ? getRecords("testimonies", { schema: zTestimony }) : [],
+    knowledge === "traditions-ancestrales" ? getRecords("testimonies", { schema: zTestimony }) : { items: [] },
   ]);
 
   return { events, page, testimonies };
@@ -89,7 +89,10 @@ export async function getKnowledgeCollectionSlugPageEntriesRecords(opts: Helpers
   const zPost = select(zPostsRecord, ["slug"], { knowledge: zKnowledgeSlug });
   const zService = select(zServicesRecord, ["category", "slug"], { knowledge: zKnowledgeSlug });
 
-  const [posts, services] = await Promise.all([getRecords("posts", { schema: zPost }), getRecords("services", { schema: zService })]);
+  const [{ items: posts }, { items: services }] = await Promise.all([
+    getRecords("posts", { schema: zPost }),
+    getRecords("services", { schema: zService }),
+  ]);
   return { posts, services };
 }
 
@@ -116,7 +119,7 @@ export async function getShopPageRecords(opts: HelpersFromOpts) {
 
   const zProduct = select(zProductsRecord, ["excerpt", "name", "price", "slug", "url"], { image: zImage });
 
-  const products = await getRecords("products", { schema: zProduct });
+  const { items: products } = await getRecords("products", { schema: zProduct });
 
   return { products };
 }

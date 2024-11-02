@@ -22,7 +22,7 @@ import {
   singleFromPost,
   singleFromService,
 } from "@/lib/pocketbase/utils";
-import type { HelpersFromOpts } from "zod-pocketbase";
+import type { HelpersFromOpts } from "astro-pocketbase";
 
 // LAYOUT **********************************************************************************************************************************
 export async function getLayout(knowledge: string | undefined, isMain: boolean, opts: HelpersFromOpts) {
