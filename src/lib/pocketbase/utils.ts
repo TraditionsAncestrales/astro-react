@@ -20,8 +20,8 @@ function strictItemFromEvent(event: EventForItem) {
   const { excerpt: text, from, image, name: title, places, service, slug, to, url: href } = event;
   const features = [
     { key: "Type", value: service.name },
-    { key: "Du", value: format(from, { date: "full", time: "short" }, "fr") },
-    { key: "Au", value: format(to, { date: "full", time: "short" }, "fr") },
+    { key: "Du", value: format({ date: from, format: { date: "full", time: "short" }, locale: "fr", tz: "Indian/Reunion" }) },
+    { key: "Au", value: format({ date: to, format: { date: "full", time: "short" }, locale: "fr", tz: "Indian/Reunion" }) },
     { key: "Endroits", value: places.map(({ name }) => name).join(" ou ") },
   ];
   return { features, href, image: imageFrom(image), slug, stale: to.toISOString(), text, title };
