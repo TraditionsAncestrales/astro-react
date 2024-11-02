@@ -30,7 +30,7 @@
     "astro": "5.0.0-beta.4",
     "astro-icon": "^1.1.1",
     "astro-loading-indicator": "^0.6.0",
-    "astro-pocketbase": "^0.10.2",
+    "astro-pocketbase": "^0.10.3",
     "astro-superforms": "^0.5.2",
     "bits-ui": "^0.21.16",
     "clsx": "^2.1.1",

@@ -8,7 +8,7 @@ import Section, { type SectionProps } from "./ui/section.astro";
 import Title from "./ui/title.astro";
 
 // PROPS ***********************************************************************************************************************************
-const { intent = "white", items = [], title: singular, ...rest } = Astro.props;
+const { forceMultiple = false, intent = "white", items = [], removeStale, title: singular, ...rest } = Astro.props;
 
 // VARS ************************************************************************************************************************************
 const hasSome = items.length > 0;
@@ -19,12 +19,12 @@ const title = `${singular}${isSingle ? "" : "s"}`;
 const { features, href, image, text } = items[0] ?? {};
 
 // TYPES ***********************************************************************************************************************************
-type Props = { items: Item[]; title: string } & SectionProps;
+type Props = { forceMultiple?: boolean; items: Item[]; removeStale?: boolean; title: string } & SectionProps;
 export type TrainingsItemsProps = Props;
 ---
 
 {
-  isSingle ? (
+  isSingle && !forceMultiple ? (
     <Section {intent} {...rest}>
       <Title slot="header" text={title} class="mb-8 xl:hidden" />
       <Image slot="aside" {...image} class="relative shadow-lg shadow-black/50" />
@@ -38,7 +38,13 @@ export type TrainingsItemsProps = Props;
   ) : (
     <Section intent={intent} expanded={hasSome} {...rest}>
       <Title slot="header" text={title} class="mb-8" />
-      {hasSome ? <RecordsCarousel {items} class="w-full" /> : <slot />}
+      {hasSome ? (
+        <RecordsCarousel {items} class="w-full" {removeStale}>
+          <slot />
+        </RecordsCarousel>
+      ) : (
+        <slot />
+      )}
     </Section>
   )
 }

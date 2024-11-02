@@ -24,7 +24,7 @@ function strictItemFromEvent(event: EventForItem) {
     { key: "Au", value: format(to, "full", "fr") },
     { key: "Endroits", value: places.map(({ name }) => name).join(" ou ") },
   ];
-  return { features, href, image: imageFrom(image), slug, text, title };
+  return { features, href, image: imageFrom(image), slug, stale: to.toISOString(), text, title };
 }
 export const itemFromEvent = allowUndefined(strictItemFromEvent);
 
@@ -167,9 +167,10 @@ type StrictItem = {
   href: string;
   image: Image;
   slug: string;
+  stale?: string;
   text: string;
   title: string;
 };
 
-export type Item<E extends Extra | undefined = undefined> = E extends undefined ? StrictItem : StrictItem & { extra: E };
+export type Item<E = undefined> = E extends undefined ? StrictItem : StrictItem & { extra: E };
 export type ServiceItem = Awaited<ReturnType<typeof itemFromService>>;

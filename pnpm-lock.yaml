@@ -66,8 +66,8 @@ importers:
         specifier: ^0.6.0
         version: 0.6.0(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3))
       astro-pocketbase:
-        specifier: ^0.10.2
-        version: 0.10.2(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3))(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8)
+        specifier: ^0.10.3
+        version: 0.10.3(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3))(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8)
       astro-superforms:
         specifier: ^0.5.2
         version: 0.5.2(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3))(devalue@5.1.1)(sveltekit-superforms@2.20.0(@sveltejs/kit@2.7.4(@sveltejs/vite-plugin-svelte@3.1.2(svelte@5.1.9)(vite@6.0.0-beta.2(@types/node@22.8.6)))(svelte@5.1.9)(vite@6.0.0-beta.2(@types/node@22.8.6)))(@types/json-schema@7.0.15)(svelte@5.1.9)(typescript@5.6.3))
@@ -1445,13 +1445,18 @@ packages:
     peerDependencies:
       astro: ^4.12.0
 
+  astro-integration-kit@0.17.0:
+    resolution: {integrity: sha512-fe31CCKmrGYn/kkBd1J4b7P02gEdMdEIFBz14zdAud+YAmJeLtZD6wmrCz3LDau+lE1oM1hQnvmZXVSM/YveKw==}
+    peerDependencies:
+      astro: ^4.12.0 || ^5.0.0-beta
+
   astro-loading-indicator@0.6.0:
     resolution: {integrity: sha512-0/gJ94ygnZ+qnLeP+dapOwAmj74hRP6t4o784+W41TicCp3pPm3d+WoH7XHlSQlokghtVynD9RdFjRd0ZWs9bg==}
     peerDependencies:
       astro: ^4.0.0
 
-  astro-pocketbase@0.10.2:
-    resolution: {integrity: sha512-d7lggrNbPhRXPSiLewCibWNZgweTTfWUDwjeTnC2AuyI2Qlb0HvhTurO+LZlgbHZXAC9n81SpcKq1J8sDUNqvQ==}
+  astro-pocketbase@0.10.3:
+    resolution: {integrity: sha512-mCwvO9gXs/vgBe4ZFS6F1zGwDZZpBjcXn8/TwtHL2jPt6bNZj7kAHt88peFA7MW7Se+WSgbacRNBOQ4XhCcZwg==}
     peerDependencies:
       astro: ^4.15.1
       pocketbase: ^0.21.5
@@ -4711,8 +4716,8 @@ packages:
   zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
 
-  zod-pocketbase@0.3.7:
-    resolution: {integrity: sha512-51RFZTZP2NL51fccjlcojipb5QBLXYLU0AXfih9OqdjKDWn57chKxICgiB3PUbc76jdqhAIfZiiF7qGUyR8nvw==}
+  zod-pocketbase@0.3.8:
+    resolution: {integrity: sha512-wA/2QIi4ubFQZdhqEZixxprKs9oWX0o3/BX6jP7Dx0QnnTcjjWXX9hvqPrrlNLNmsf5D5CtM3lEn4B3CRHMZKw==}
     hasBin: true
     peerDependencies:
       pocketbase: ^0.21.5
@@ -6144,19 +6149,25 @@ snapshots:
       pathe: 1.1.2
       recast: 0.23.9
 
+  astro-integration-kit@0.17.0(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3)):
+    dependencies:
+      astro: 5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3)
+      pathe: 1.1.2
+      recast: 0.23.9
+
   astro-loading-indicator@0.6.0(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3)):
     dependencies:
       astro: 5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3)
 
-  astro-pocketbase@0.10.2(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3))(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8):
+  astro-pocketbase@0.10.3(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3))(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8):
     dependencies:
       astro: 5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3)
-      astro-integration-kit: 0.16.1(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3))
+      astro-integration-kit: 0.17.0(astro@5.0.0-beta.4(@types/node@22.8.6)(rollup@4.24.3)(typescript@5.6.3))
       dotenv: 16.4.5
       es-toolkit: 1.26.1
       pocketbase: 0.21.5
       zod: 3.23.8
-      zod-pocketbase: 0.3.7(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8)
+      zod-pocketbase: 0.3.8(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8)
     transitivePeerDependencies:
       - encoding
       - magicast
@@ -9976,7 +9987,7 @@ snapshots:
 
   zimmerframe@1.1.2: {}
 
-  zod-pocketbase@0.3.7(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8):
+  zod-pocketbase@0.3.8(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8):
     dependencies:
       '@11ty/eleventy-fetch': 4.0.1(encoding@0.1.13)
       '@clack/prompts': 0.7.0

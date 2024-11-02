@@ -28,7 +28,7 @@
   <div in:fly={{ y: 400, duration: 1000 }} out:fly={{ y: -400, duration: 1000 }} class={cEl}>
     <article class="max-w-4xl">
       <h5 class="mb-8 text-3xl font-bold italic">{item.title}</h5>
-      <p class="mb-4 italic">{@html item.text}</p>
+      <div class="mb-4 italic">{@html item.text}</div>
       <p class="font-bold">{item.author}</p>
     </article>
   </div>
