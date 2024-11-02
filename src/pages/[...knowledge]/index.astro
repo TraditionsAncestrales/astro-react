@@ -5,6 +5,7 @@ import Layout, { layoutCache } from "@/layouts/main.astro";
 import { getKnowledgePage, getKnowledgePagePaths } from "@/lib/api";
 import { PUBLIC_ASTRO_POCKETBASE_URL } from "astro:env/server";
 import Pocketbase from "pocketbase";
+import TheEvents from "./_/the-events.astro";
 import TheTestimonies from "./_/the-testimonies.astro";
 
 // PATHS ***********************************************************************************************************************************
@@ -41,11 +42,6 @@ Astro.response.headers.set(
   <RecordsItems title="Consultation" items={consultations} intent={count > 1 ? "primary" : "light"} />
   <RecordsItems title="Atelier" items={workshops} intent="light" />
   <RecordsItems title="Formation" items={trainings} intent={count === 3 ? "white" : "light"} />
-  <RecordsItems title="Événement" items={events} border="bottom" intent={count > 0 ? "primary" : "light"}>
-    <div>
-      <p>Retrouvez bientôt ici l'ensemble de mes événements.</p>
-      <strong>Vous pouvez déjà en obtenir le programme en me faisant une demande via le formulaire de contact.</strong>
-    </div>
-  </RecordsItems>
+  <TheEvents intent={count > 0 ? "primary" : "light"} {events} />
   <TheTestimonies {...testimonies} />
 </Layout>

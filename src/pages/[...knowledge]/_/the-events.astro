@@ -1,0 +1,23 @@
+---
+import RecordsItems from "@/components/records-items.astro";
+import type { SectionProps } from "@/components/ui/section.astro";
+import type { Item } from "@/lib/pocketbase/utils";
+
+// PROPS ***********************************************************************************************************************************
+const { events, intent } = Astro.props;
+
+// TYPES ***********************************************************************************************************************************
+type Props = SectionProps & { events: Item[] };
+export type TheEventsProps = Props;
+---
+
+<RecordsItems title="Événement" items={events} border="bottom" {intent}>
+  <div>
+    <p>Retrouvez bientôt ici l'ensemble de mes événements.</p>
+    <strong>Vous pouvez déjà en obtenir le programme en me faisant une demande via le formulaire de contact.</strong>
+  </div>
+</RecordsItems>
+
+<script>
+  console.log(new Date().toISOString());
+</script>
