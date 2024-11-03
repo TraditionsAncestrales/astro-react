@@ -1,10 +1,13 @@
 ---
 import RecordsItems from "@/components/records-items.astro";
-import Layout, { layoutCache } from "@/layouts/main.astro";
 import { getShopPage } from "@/lib/api";
+import Layout, { layoutCache } from "@/pages/_/layout.astro";
 
 // DATA ************************************************************************************************************************************
 const { products } = await getShopPage({ pocketbase: Astro.locals.pocketbase, cache: import.meta.env.DEV ? "1d" : undefined });
+
+// VARS ************************************************************************************************************************************
+const seo = { title: "La Boutique", description: "Retrouvez tous mes produits dans la boutique." };
 
 // CACHE ***********************************************************************************************************************************
 Astro.response.headers.set("cache-control", "public, max-age=0, must-revalidate");
@@ -12,7 +15,7 @@ Astro.response.headers.set("netlify-cdn-cache-control", "durable, s-maxage=31536
 Astro.response.headers.set("netlify-cache-tag", [...layoutCache, "products"].join(","));
 ---
 
-<Layout>
+<Layout {seo}>
   <RecordsItems title="Produit" items={products} border="all" intent="light">
     <p>Il n'y a actuellement aucun produit dans la boutique.</p>
   </RecordsItems>

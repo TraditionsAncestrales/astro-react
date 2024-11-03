@@ -1,18 +1,19 @@
 ---
 import "@/styles/globals.css";
 import "@/styles/theme.css";
-import TheFooter from "./_/the-footer.astro";
-import TheHeader from "./_/the-header.astro";
-import TheHero from "./_/the-hero.astro";
+import TheFooter from "./the-footer.astro";
+import TheHeader from "./the-header.astro";
+import TheHero from "./the-hero.astro";
 import { cn } from "@/lib/utils";
-import TheOtherKnowledges from "./_/the-other-knowledges.astro";
-import TheNewsletter from "./_/the-newsletter.astro";
+import TheOtherKnowledges from "./the-other-knowledges.astro";
+import TheNewsletter from "./the-newsletter.astro";
 import PostsItem from "@/components/posts-item.astro";
-import TheContact from "./_/the-contact.astro";
+import TheContact from "./the-contact.astro";
 import { ClientRouter } from "astro:transitions";
 import { Toaster } from "@/components/ui/sonner";
 import { getLayout } from "@/lib/api";
 import LoadingIndicator from "astro-loading-indicator/component";
+import { SEO, type Props as SEOProps } from "astro-seo";
 
 // DATA ************************************************************************************************************************************
 const { config, hero, isHome, isMain, organizationPost, otherKnowledges, theme } = await getLayout(
@@ -21,19 +22,39 @@ const { config, hero, isHome, isMain, organizationPost, otherKnowledges, theme }
   { pocketbase: Astro.locals.pocketbase, cache: import.meta.env.DEV ? "1d" : undefined }
 );
 
+// PROPS ***********************************************************************************************************************************
+const { seo } = Astro.props;
+
 // CACHE ***********************************************************************************************************************************
 export const layoutCache = ["config", "knowledges", "posts_l-association"];
+
+// TYPES ***********************************************************************************************************************************
+type Props = { seo: SEOProps };
+export type LayoutProps = Props;
 ---
 
 <html lang="fr">
   <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Traditions ancestrales</title>
-
+    <SEO
+      titleDefault="Le site d'Océane - Traditions ancestrales"
+      titleTemplate="%s — Traditions ancestrales"
+      description="A heavily optimized description full of well-researched keywords."
+      charset="utf8"
+      extend={{
+        link: [
+          { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+          { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+          { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
+          { rel: "manifest", href: "/site.webmanifest" },
+          { rel: "sitemap", href: "/sitemap-index.xml" },
+        ],
+        meta: [
+          { name: "viewport", content: "width=device-width, initial-scale=1" },
+          { name: "generator", content: Astro.generator },
+        ],
+      }}
+      {...seo}
+    />
     <ClientRouter />
     <LoadingIndicator color="rgb(var(--primary))" height="4px" />
   </head>

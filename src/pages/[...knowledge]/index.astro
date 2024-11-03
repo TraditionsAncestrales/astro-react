@@ -1,8 +1,8 @@
 ---
 import PostsItem from "@/components/posts-item.astro";
 import RecordsItems from "@/components/records-items.astro";
-import Layout, { layoutCache } from "@/layouts/main.astro";
 import { getKnowledgePage, getKnowledgePagePaths } from "@/lib/api";
+import Layout, { layoutCache } from "@/pages/_/layout.astro";
 import { PUBLIC_ASTRO_POCKETBASE_URL } from "astro:env/server";
 import Pocketbase from "pocketbase";
 import TheTestimonies from "./_/the-testimonies.astro";
@@ -15,7 +15,7 @@ export async function getStaticPaths() {
   });
 }
 
-// PROPS ***********************************************************************************************************************************
+// PARAMS **********************************************************************************************************************************
 const { knowledge = "traditions-ancestrales" } = Astro.params;
 
 // DATA ************************************************************************************************************************************
@@ -25,6 +25,7 @@ const { consultations, events, post, testimonies, trainings, workshops } = await
 });
 
 // VARS ************************************************************************************************************************************
+const seo = { title: knowledge === "traditions-ancestrales" ? undefined : post.title, description: post.text };
 const count = +(consultations.length > 0) + +(workshops.length > 0) + +(trainings.length > 0);
 
 // CACHE ***********************************************************************************************************************************
@@ -36,7 +37,7 @@ Astro.response.headers.set(
 );
 ---
 
-<Layout>
+<Layout {seo}>
   <PostsItem {post} border="top" class={{ ASIDE: "!max-w-sm" }} />
   <RecordsItems title="Consultation" items={consultations} intent={count > 1 ? "primary" : "light"} />
   <RecordsItems title="Atelier" items={workshops} intent="light" />
