@@ -3,7 +3,7 @@ import type { Intent } from "@/styles/ui";
 import { tv } from "tailwind-variants";
 
 // PROPS ***********************************************************************************************************************************
-const { asideRight = false, border = "none", class: classes = {}, expanded = false, intent = "white" } = Astro.props;
+const { asideRight = false, border = "none", class: classes = {}, expanded = false, intent = "white", ...r } = Astro.props;
 
 // VARS ************************************************************************************************************************************
 const hasBorderBottom = ["all", "bottom"].includes(border);
@@ -59,7 +59,7 @@ export type SectionProps = Props;
 ---
 
 {hasBorderTop && <div class={BORDER({ intent, class: ["-mt-16", C.BORDER] })} />}
-<section class={ROOT({ border, expanded, intent, class: C.ROOT })}>
+<section class={ROOT({ border, expanded, intent, class: C.ROOT })} {...r}>
   <div class={WRAPPER({ expanded, class: C.WRAPPER })}>
     {
       Astro.slots.has("header") && (

@@ -1,18 +1,19 @@
 import netlify from "@astrojs/netlify";
+import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import { imageService } from "@unpic/astro/service";
 import icon from "astro-icon";
+import pocketbase from "astro-pocketbase";
 import superforms from "astro-superforms";
 import { defineConfig, envField } from "astro/config";
+import { pascalCase } from "es-toolkit";
 import { FontaineTransform } from "fontaine";
 import simpleStackQuery from "simple-stack-query";
 
-import pocketbase from "astro-pocketbase";
-import { pascalCase } from "es-toolkit";
-
 // https://astro.build/config
 export default defineConfig({
+  site: "https://traditionsancestrales.fr",
   adapter: netlify(),
   output: "server",
 
@@ -40,6 +41,7 @@ export default defineConfig({
       nameEnumSchema: (name: string) => `z${pascalCase(name)}`,
       nameRecordSchema: (name: string) => `z${pascalCase(name)}Record`,
     }),
+    sitemap(),
   ],
 
   vite: {
