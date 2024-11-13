@@ -25,13 +25,11 @@ const message = getContactMessage(state);
 </Section>
 
 <script>
-  import "leaflet/dist/leaflet.css";
-
   const { lat, lng, zoom } = { lat: -21.142_107, lng: 55.294_209, zoom: 17 };
 
   RootElement.ready(($) => {
-    const observer = new IntersectionObserver(async ([entry]) => {
-      const L = await import("leaflet");
+    const observer = new IntersectionObserver(async () => {
+      const [L] = await Promise.all([import("leaflet"), import("leaflet/dist/leaflet.css")]);
       const map = L.map($<HTMLElement>("map")).setView([lat, lng], zoom);
 
       L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
