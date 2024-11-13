@@ -10,7 +10,7 @@ export default function TheTestimoniesCarousel({ className, items }: TheTestimon
         {items.map(({ author, text, title }, key) => (
           <CarouselItem key={key} className="flex h-full items-center justify-center text-center">
             <article className="max-w-4xl">
-              <h5 className="mb-8 text-3xl font-bold italic">{title}</h5>
+              <h4 className="mb-8 text-3xl font-bold italic">{title}</h4>
               <div className="mb-4 italic" dangerouslySetInnerHTML={{ __html: text }} />
               <p className="font-bold">{author}</p>
             </article>

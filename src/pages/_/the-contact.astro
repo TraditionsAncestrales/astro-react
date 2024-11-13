@@ -19,6 +19,6 @@ const message = getContactMessage(state);
   <Title slot="header" text="Me contacter" class="mb-8" />
   <div class="flex w-full justify-center gap-8 xl:justify-start">
     <Form client:visible initState={state} initValues={values} initMessage={message} className="w-full max-w-xl pb-96 xl:pb-0" />
-    <Map client:only className="absolute inset-x-0 bottom-0 z-0 h-96 xl:left-auto xl:top-0 xl:h-auto xl:w-1/2" />
+    <Map client:visible client:only className="absolute inset-x-0 bottom-0 z-0 h-96 xl:left-auto xl:top-0 xl:h-auto xl:w-1/2" />
   </div>
 </Section>
