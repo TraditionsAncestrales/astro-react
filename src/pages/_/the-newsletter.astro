@@ -1,5 +1,6 @@
 ---
 import Section from "@/components/ui/section.astro";
+import { Toaster } from "@/components/ui/sonner";
 import Title from "@/components/ui/title.astro";
 import { defaultNewsletterValues, getNewsletterMessage, getValuesFor } from "@/lib/utils";
 import { actions } from "astro:actions";
@@ -23,3 +24,4 @@ const message = getNewsletterMessage(state);
     <Form client:visible initState={state} initValues={values} initMessage={message} className="flex-1" />
   </div>
 </Section>
+<Toaster client:visible richColors theme="light" />
