@@ -10,7 +10,7 @@ import TheNewsletter from "./the-newsletter.astro";
 import PostsItem from "@/components/posts-item.astro";
 import TheContact from "./the-contact.astro";
 import { ClientRouter } from "astro:transitions";
-import { Toaster } from "@/components/ui/sonner";
+// import { Toaster } from "@/components/ui/sonner";
 import { getLayout } from "@/lib/api";
 import LoadingIndicator from "astro-loading-indicator/component";
 import { SEO, type Props as SEOProps } from "astro-seo";
@@ -74,7 +74,7 @@ export type LayoutProps = Props;
     <TheNewsletter border="top" intent="primary" />
     {isHome ? <TheContact intent="light" /> : <PostsItem post={organizationPost} class="mb-4" />}
     <TheFooter {config} />
-    <Toaster client:load richColors theme="light" />
+    <!-- <Toaster client:load richColors theme="light" /> -->
   </body>
 </html>
 
