@@ -98,7 +98,7 @@ export function featuresFromProduct({ price }: ProductForFeatures) {
 // SERVICES ********************************************************************************************************************************
 function strictSingleFromService(service: ServiceForSingle) {
   const { image, name: title, text } = service;
-  return { features: featuresFromService(service), image, text, title };
+  return { features: featuresFromService(service), image: imageFrom(image), text, title };
 }
 export const singleFromService = allowUndefined(strictSingleFromService);
 
