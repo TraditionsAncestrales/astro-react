@@ -4,7 +4,6 @@ import Title from "@/components/ui/title.astro";
 import { defaultContactValues, getContactMessage, getValuesFor } from "@/lib/utils";
 import { actions } from "astro:actions";
 import Form from "./the-contact.form";
-import Map from "./the-contact.map.astro";
 
 // PROPS ***********************************************************************************************************************************
 const { ...rest } = Astro.props;
@@ -19,6 +18,31 @@ const message = getContactMessage(state);
   <Title slot="header" text="Me contacter" class="mb-8" />
   <div class="flex w-full justify-center gap-8 xl:justify-start">
     <Form client:visible initState={state} initValues={values} initMessage={message} className="w-full max-w-xl pb-96 xl:pb-0" />
-    <Map client:visible class="absolute inset-x-0 bottom-0 z-0 h-96 xl:left-auto xl:top-0 xl:h-auto xl:w-1/2" />
+    <RootElement>
+      <figure data-target="map" class="absolute inset-x-0 bottom-0 z-0 h-96 xl:left-auto xl:top-0 xl:h-auto xl:w-1/2"></figure>
+    </RootElement>
   </div>
 </Section>
+
+<script>
+  import L from "leaflet";
+  import "leaflet/dist/leaflet.css";
+
+  const { lat, lng, zoom } = { lat: -21.142_107, lng: 55.294_209, zoom: 17 };
+
+  RootElement.ready(($) => {
+    const map = L.map($<HTMLElement>("map")).setView([lat, lng], zoom);
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+    L.marker([lat, lng], {
+      icon: L.icon({
+        iconSize: [25, 41],
+        iconAnchor: [10, 41],
+        popupAnchor: [2, -40],
+        iconUrl: "/map/icon.png",
+        iconRetinaUrl: "/map/icon2.png",
+        shadowUrl: "/map/shadow.png",
+      }),
+    }).addTo(map);
+  });
+</script>

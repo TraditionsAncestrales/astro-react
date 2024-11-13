@@ -23,7 +23,7 @@ export type CarouselProps = Props;
     <div data-target="carousel" class="overflow-hidden">
       <div class="-ml-4 flex">
         {
-          items.map(({ features, href, image, slug, stale, text, title }) => (
+          items.map(({ features, href, image, stale, text, title }) => (
             <div class="mb-2 min-w-0 max-w-96 shrink-0 grow-0 basis-full pl-4" data-stale={stale}>
               <div class="flex h-full w-full flex-col bg-white shadow-md">
                 <Image {...image} height={256} width={384} breakpoints={[384, 768]} sizes="24rem" class="flex-none" />
