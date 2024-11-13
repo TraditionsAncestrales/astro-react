@@ -19,7 +19,7 @@ export function allowUndefined<FROM, TO>(method: (defined: FROM) => TO) {
 function strictItemFromEvent(event: EventForItem) {
   const { excerpt: text, from, image, name: title, places, service, slug, to, url: href } = event;
   const features = [
-    { key: "Type", value: service.name },
+    { href: hrefFromService(service), key: "Type", value: service.name },
     { key: "Du", value: format({ date: from, format: { date: "full", time: "short" }, locale: "fr", tz: "Indian/Reunion" }) },
     { key: "Au", value: format({ date: to, format: { date: "full", time: "short" }, locale: "fr", tz: "Indian/Reunion" }) },
     { key: "Endroits", value: places.map(({ name }) => name).join(" ou ") },
@@ -29,15 +29,15 @@ function strictItemFromEvent(event: EventForItem) {
 export const itemFromEvent = allowUndefined(strictItemFromEvent);
 
 // IMAGE ***********************************************************************************************************************************
-function strictImageFrom({ alt, height, id, src, width }: ImageForEntry) {
-  return { alt, aspectRatio: width / height, src: `${PUBLIC_IMGIX_URL}/${id}/${src}` };
+export function strictImageFrom({ alt, height, id, src, width }: ImageForEntry) {
+  return { alt, height, src: `${PUBLIC_IMGIX_URL}/${id}/${src}?q=50`, width };
 }
 export const imageFrom = allowUndefined(strictImageFrom);
 
 // KNOWLEDGE *******************************************************************************************************************************
 function strictItemFromKnowledge(knowledge: KnowledgeForItem) {
   const { image, name: title, slug, text } = knowledge;
-  return { href: `/${slug}`, image: imageFrom(image), slug, text, title };
+  return { href: hrefFromKnowledge(knowledge).slice(0, -1), image: imageFrom(image), slug, text, title };
 }
 export const itemFromKnowledge = allowUndefined(strictItemFromKnowledge);
 
@@ -98,7 +98,7 @@ export function featuresFromProduct({ price }: ProductForFeatures) {
 // SERVICES ********************************************************************************************************************************
 function strictSingleFromService(service: ServiceForSingle) {
   const { image, name: title, text } = service;
-  return { features: featuresFromService(service), image: imageFrom(image), text, title };
+  return { features: featuresFromService(service), image, text, title };
 }
 export const singleFromService = allowUndefined(strictSingleFromService);
 
@@ -134,13 +134,14 @@ export function pathFromService(service: ServiceForRoute) {
 }
 
 // TYPES ***********************************************************************************************************************************
-export type Image = NonNullable<ReturnType<typeof imageFrom>>;
+export type Image = Awaited<NonNullable<ReturnType<typeof strictImageFrom>>>;
 
 type EventForItem = Pick<EventsRecord, "excerpt" | "from" | "name" | "slug" | "to" | "url"> & {
   image: ImageForEntry;
   places: Pick<PlacesRecord, "name">[];
-  service: Pick<ServicesRecord, "name">;
+  service: Pick<ServicesRecord, "name"> & ServiceForRoute;
 };
+
 type ImageForEntry = Pick<ImagesRecord, "alt" | "height" | "id" | "src" | "width">;
 type KnowledgeForItem = KnowledgeForRoute & Pick<KnowledgesRecord, "name" | "text"> & { image: ImageForEntry };
 type KnowledgeForRoute = Pick<KnowledgesRecord, "slug">;
@@ -156,6 +157,7 @@ type ServiceForItem = ServiceForFeatures & ServiceForRoute & Pick<ServicesRecord
 type ServiceForRoute = ServiceForFragment & Pick<ServicesRecord, "slug"> & { knowledge: KnowledgeForRoute };
 
 export type Feature = {
+  href?: string;
   key: string;
   value: string;
 };

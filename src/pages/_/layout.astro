@@ -38,7 +38,7 @@ export type LayoutProps = Props;
     <SEO
       titleDefault="Le site d'Océane - Traditions ancestrales"
       titleTemplate="%s — Traditions ancestrales"
-      description="A heavily optimized description full of well-researched keywords."
+      description="Site d'Océane Ravasini à propos des traditions ancestrales : chamanisme, rêves, reiki et tarot."
       charset="utf8"
       extend={{
         link: [
@@ -47,6 +47,12 @@ export type LayoutProps = Props;
           { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
           { rel: "manifest", href: "/site.webmanifest" },
           { rel: "sitemap", href: "/sitemap-index.xml" },
+          {
+            rel: "preload",
+            href: "https://niama-traditions-ancestrales.imgix.net/l5oxjx4c9kltz0d/splash_JaAKBlu3Mz.webp?auto=format&q=50",
+            as: "image",
+            crossorigin: "anonymous",
+          },
         ],
         meta: [
           { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -56,7 +62,7 @@ export type LayoutProps = Props;
       {...seo}
     />
     <ClientRouter />
-    <LoadingIndicator color="rgb(var(--primary))" height="4px" />
+    <LoadingIndicator color="hsl(var(--primary))" height="4px" />
   </head>
   <body class="group overflow-y-auto overflow-x-hidden" data-theme={theme}>
     <RootElement><div data-target="scroll"></div></RootElement>

@@ -1,24 +1,24 @@
 ---
 import Section from "@/components/ui/section.astro";
 import Title from "@/components/ui/title.astro";
-import { zContactValues } from "@/lib/utils";
-import { superValidate } from "sveltekit-superforms";
-import { zod } from "sveltekit-superforms/adapters";
-import Form from "./the-contact.form.svelte";
-import Map from "./the-contact.map.svelte";
+import { defaultContactValues, getContactMessage, getValuesFor } from "@/lib/utils";
+import { actions } from "astro:actions";
+import Form from "./the-contact.form";
+import Map from "./the-contact.map";
 
 // PROPS ***********************************************************************************************************************************
 const { ...rest } = Astro.props;
 
 // VARS ************************************************************************************************************************************
-const sv = await superValidate(Astro.request, zod(zContactValues));
-const options = { lat: -21.142_107, lng: 55.294_209, zoom: 17 };
+const state = Astro.getActionResult(actions.sendMessage);
+const values = await getValuesFor({ defaultValues: defaultContactValues, shouldSkip: (state) => !!state?.data })(Astro.request, state);
+const message = getContactMessage(state);
 ---
 
 <Section class="relative" {...rest}>
   <Title slot="header" text="Me contacter" class="mb-8" />
-  <div class="w-full gap-8 lg:flex">
-    <Form client:visible {sv} class="w-full max-w-xl pb-96 xl:pb-0" />
-    <Map client:visible {options} class="absolute inset-x-0 bottom-0 z-0 h-96 xl:left-auto xl:top-0 xl:h-auto xl:w-1/2" />
+  <div class="flex w-full justify-center gap-8 xl:justify-start">
+    <Form client:visible initState={state} initValues={values} initMessage={message} className="w-full max-w-xl pb-96 xl:pb-0" />
+    <Map client:only className="absolute inset-x-0 bottom-0 z-0 h-96 xl:left-auto xl:top-0 xl:h-auto xl:w-1/2" />
   </div>
 </Section>

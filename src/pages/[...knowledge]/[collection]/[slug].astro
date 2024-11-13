@@ -28,7 +28,7 @@ if (!single) return Astro.redirect("/404");
 const { features, image, text, title } = single;
 
 // VARS ************************************************************************************************************************************
-const seo = { title: title, description: text };
+const seo = { title: title };
 const sizes = `(min-width: 1536px) 42rem, (min-width: 1280px) 36rem, (min-width: 1024px) 28rem, (min-width: 768px) 20rem (min-width: 640px) 36rem, 100vw`;
 
 // CACHE ***********************************************************************************************************************************
@@ -40,8 +40,8 @@ Astro.response.headers.set("netlify-cache-tag", [...layoutCache, `${collection =
 <Layout {seo}>
   <Section asideRight border="all" intent="white">
     <Title slot="header" text={title} class="mb-8" />
-    {image && <Image slot={image && "aside"} {...image} width={672} sizes={sizes} class="relative shadow-lg shadow-black/50" />}
-    <Features slot="aside" features={features} />
+    {image && <Image slot={image && "aside"} {...image} {sizes} class="relative shadow-lg shadow-black/50" />}
+    <Features slot="aside" {features} />
     <article set:html={text} />
   </Section>
 </Layout>

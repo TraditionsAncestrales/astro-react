@@ -16,7 +16,7 @@ export const hoverBg = (intent: Intent) =>
   ({
     dark: "hover:bg-neutral-700",
     light: "hover:bg-neutral-100",
-    primary: "hover:bg-primary-400",
+    primary: "hover:bg-primary/80",
     secondary: "hover:bg-neutral-500",
     white: "hover:bg-white",
   })[intent];
@@ -25,7 +25,7 @@ export const focusRing = (intent: Intent) =>
   ({
     dark: "focus:ring-neutral-600",
     light: "focus:ring-white",
-    primary: "focus:ring-primary-300",
+    primary: "focus:ring-primary-400",
     secondary: "focus:ring-neutral-400",
     white: "focus:ring-white",
   })[intent];

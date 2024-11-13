@@ -1,34 +1,24 @@
 [data-theme="chamanisme"] {
-  --primary: 163 200 108; /* ⬅ #a2c86c */
-  --primary-400: 190 217 152; /* ⬅ #bed998  primary/75 */
-  --primary-300: 210 228 182; /* ⬅ #d1e4b6  primary/50 */
-  --primary-200: 227 239 210; /* ⬅ #e3efd3  primary/25 */
+  --primary: 84 46% 60%; /* ⬅ #a2c86c */
+  --primary-400: 84 46% 78%; /* ⬅ #bed998  primary/75 */
 }
 
 [data-theme="reiki"] {
-  --primary: 241 219 67; /* ⬅ #f1DB43 */
-  --primary-400: 245 229 123; /* ⬅ #f5e67b  primary/75 */
-  --primary-300: 248 237 161; /* ⬅ #f8eda1  primary/50 */
-  --primary-200: 251 244 199; /* ⬅ #fbf4c7  primary/25 */
+  --primary: 52 86% 60%; /* ⬅ #f1DB43 */
+  --primary-400: 52 86% 78%; /* ⬅ #f5e67b  primary/75 */
 }
 
 [data-theme="reves"] {
-  --primary: 200 108 153; /* ⬅ #c86c99 */
-  --primary-400: 217 152 184; /* ⬅ #d998b8  primary/75 */
-  --primary-300: 228 182 204; /* ⬅ #e4b6cc  primary/50 */
-  --primary-200: 239 211 224; /* ⬅ #efd3e0  primary/25 */
+  --primary: 331 46% 60%; /* ⬅ #c86c99 */
+  --primary-400: 331 46% 78%; /* ⬅ #d998b8  primary/75 */
 }
 
 [data-theme="tarot"] {
-  --primary: 200 128 108; /* ⬅ #c8806c */
-  --primary-400: 217 166 151; /* ⬅ #d9a698  primary/75 */
-  --primary-300: 228 192 182; /* ⬅ #e4c0b6  primary/50 */
-  --primary-200: 239 217 211; /* ⬅ #efd9d3  primary/25 */
+  --primary: 13 46% 60%; /* ⬅ #c8806c */
+  --primary-400: 13 46% 78%; /* ⬅ #d9a698  primary/75 */
 }
 
 [data-theme="traditions-ancestrales"] {
-  --primary: 162 120 187; /* ⬅ #a278bb */
-  --primary-400: 190 161 207; /* ⬅ #bea1cf  primary/75 */
-  --primary-300: 209 188 221; /* ⬅ #d1bcdd  primary/50 */
-  --primary-200: 227 215 235; /* ⬅ #e3d7eb  primary/25 */
+  --primary: 278 33% 60%; /* ⬅ #a278bb */
+  --primary-400: 276 33% 78%; /* ⬅ #bca0cf  primary/75 */
 }

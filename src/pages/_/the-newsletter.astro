@@ -1,17 +1,17 @@
 ---
 import Section from "@/components/ui/section.astro";
 import Title from "@/components/ui/title.astro";
-import { zNewsletterValues } from "@/lib/utils";
-import { Icon } from "astro-icon/components";
-import { superValidate } from "sveltekit-superforms";
-import { zod } from "sveltekit-superforms/adapters";
-import Form from "./the-newsletter.form.svelte";
+import { defaultNewsletterValues, getNewsletterMessage, getValuesFor } from "@/lib/utils";
+import { actions } from "astro:actions";
+import Form from "./the-newsletter.form";
 
 // PROPS ***********************************************************************************************************************************
 const { ...rest } = Astro.props;
 
 // VARS ************************************************************************************************************************************
-const sv = await superValidate(Astro.request, zod(zNewsletterValues));
+const state = Astro.getActionResult(actions.subscribeToNewsletter);
+const values = await getValuesFor({ defaultValues: defaultNewsletterValues, shouldSkip: (state) => !!state?.data })(Astro.request, state);
+const message = getNewsletterMessage(state);
 ---
 
 <Section {...rest}>
@@ -20,9 +20,6 @@ const sv = await superValidate(Astro.request, zod(zNewsletterValues));
     <p class="text-justify lg:max-w-sm xl:max-w-lg">
       Pour recevoir chaque semaine mon bulletin, c'est simple, vous avez juste à saisir votre courriel :
     </p>
-    <Form client:visible {sv} class="flex-1">
-      <Icon slot="submit-icon" name="bi:envelope-plus" class="h-4 w-4" />
-      <Icon slot="submitting-icon" name="bi:envelope-plus" class="h-4 w-4" />
-    </Form>
+    <Form client:visible initState={state} initValues={values} initMessage={message} className="flex-1" />
   </div>
 </Section>

@@ -2,9 +2,9 @@
 import { BUTTON } from "@/components/ui/button";
 import Section from "@/components/ui/section.astro";
 import Title from "@/components/ui/title.astro";
-import type { Item } from "@/lib/pocketbase/utils";
+import { type Item } from "@/lib/pocketbase/utils";
 import { cn } from "@/lib/utils";
-import { Image as Img } from "@unpic/astro";
+import { Image } from "@unpic/astro";
 
 // PROPS ***********************************************************************************************************************************
 const { knowledges } = Astro.props;
@@ -25,12 +25,11 @@ export type KnowledgesItemsProps = Props;
       <>
         <Section intent="primary" class={cn("lg:hidden", { "pt-16": i === 0, "pb-20": i === knowledges.length - 1 })} data-theme={slug}>
           <Title slot="header" text={title} class="mb-8" />
-          <Img
+          <Image
             slot="aside"
             {...image}
-            objectFit="cover"
-            sizes="(min-width: 768px) 20rem, (min-width: 640px) 36rem, 100vw"
-            aspectRatio={3 / 2}
+            breakpoints={[320, 640, 960, 1280, 1600, 1920]}
+            sizes="(min-width: 768px) 20rem, calc(100vw - 7rem - 15px)"
             class="relative aspect-[3/2] shadow-lg shadow-black/50"
           />
           <article set:html={text} />
@@ -44,7 +43,7 @@ export type KnowledgesItemsProps = Props;
           class="group/k relative hidden h-[600px] w-1/4 flex-col items-center justify-center overflow-hidden lg:flex"
           data-theme={slug}
         >
-          <Img {...image} objectFit="cover" height={600} width={512} sizes="25vw" class={cn(cAbs, "-z-20 group-hover/k:scale-105")} />
+          <Image {...image} breakpoints={[320, 640, 960, 1280]} sizes="25vw" class={cn(cAbs, "-z-20 group-hover/k:scale-105")} />
           <div class={cn(cAbs, "-z-10 translate-y-full bg-primary group-hover/k:translate-y-0")}>
             <div class="mt-[150px] px-4 text-center">
               <article set:html={text} />

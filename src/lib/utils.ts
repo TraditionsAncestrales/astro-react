@@ -1,75 +1,79 @@
 import { z } from "astro/zod";
-import type { ActionError } from "astro:actions";
-import { type ClassValue, clsx } from "clsx";
-import { cubicOut } from "svelte/easing";
-import type { TransitionConfig } from "svelte/transition";
+import { ActionError, actions, isInputError, type ActionErrorCode, type SafeResult } from "astro:actions";
+import { clsx, type ClassValue } from "clsx";
+import type { FieldErrors, FieldValues } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
+
+// FORM ************************************************************************************************************************************
+function getMessageFor(i18n: MessageI18n) {
+  return <D extends FieldValues>(state: State<D> | undefined, isPending = false): Message | undefined => {
+    const code = state?.data?.code ?? state?.error?.code ?? "INTERNAL_SERVER_ERROR";
+    return !state || isPending ? undefined : { description: i18n[code] ?? "Erreur inconnue", code };
+  };
+}
+
+export function getValuesFor<V extends FieldValues>({ defaultValues, shouldSkip }: GetValuesForParams<V>) {
+  return async (request: Request, state: State<V>) => {
+    if (request.method !== "POST" || (shouldSkip?.(state) ?? false)) return defaultValues;
+    const formData = await request.clone().formData();
+    formData.delete("_astroAction");
+    formData.delete("_astroActionState");
+    formData.delete("$ACTION_KEY");
+    return Object.fromEntries(formData.entries()) as V;
+  };
+}
+
+export function rhfErrorsFromAstro<T extends FieldValues = FieldValues>(error?: ActionError) {
+  if (!error) return;
+  if (!isInputError(error)) return { root: { type: error.code } } as FieldErrors<T>;
+  return Object.fromEntries(Object.entries(error.fields).map(([name, errors]) => [name, { message: errors?.[0] }])) as FieldErrors<T>;
+}
 
 // CONTACT *********************************************************************************************************************************
 export const zContactValues = z.object({
-  email: z.string().email("Ce courriel est invalide.").min(1, "Ce champ est requis."),
-  fullname: z.string().min(1, "Ce champ est requis."),
-  message: z.string().min(1, "Ce champ est requis."),
+  email: z.string({ message: "Ce champ est requis." }).email("Ce courriel est invalide.").min(1, "Ce champ est requis."),
+  fullname: z.string({ message: "Ce champ est requis." }).min(1, "Ce champ est requis."),
+  message: z.string({ message: "Ce champ est requis." }).min(1, "Ce champ est requis."),
+});
+export type ContactValues = z.infer<typeof zContactValues>;
+
+export const defaultContactValues: ContactValues = { email: "", fullname: "", message: "" };
+
+export const getContactMessage = getMessageFor({
+  SUCCESS: "Votre message a été envoyé avec succès.",
+  BAD_REQUEST: "Veuillez réessayer ultérieurement.",
 });
 
-export type ContactValues = z.infer<typeof zContactValues>;
+export type ContactState = Awaited<ReturnType<typeof actions.sendMessage>>;
 
 // NEWSLETTER ******************************************************************************************************************************
 export const zNewsletterValues = z.object({
   email: z.string().email("Ce courriel est invalide.").min(1, "Ce champ est requis."),
 });
-
 export type NewsletterValues = z.infer<typeof zNewsletterValues>;
+
+export const defaultNewsletterValues: NewsletterValues = { email: "" };
+
+export const getNewsletterMessage = getMessageFor({
+  SUCCESS: "Veuillez valider votre inscription dans le courriel reçu.",
+  BAD_REQUEST: "Veuillez réessayer ultérieurement.",
+  CONFLICT: "Vous êtes déjà inscrit·e.",
+});
+
+export type NewsletterState = Awaited<ReturnType<typeof actions.subscribeToNewsletter>>;
 
 // STYLES **********************************************************************************************************************************
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-type FlyAndScaleParams = {
-  y?: number;
-  x?: number;
-  start?: number;
-  duration?: number;
-};
-
-export const flyAndScale = (node: Element, params: FlyAndScaleParams = { y: -8, x: 0, start: 0.95, duration: 150 }): TransitionConfig => {
-  const style = getComputedStyle(node);
-  const transform = style.transform === "none" ? "" : style.transform;
-
-  const scaleConversion = (valueA: number, scaleA: [number, number], scaleB: [number, number]) => {
-    const [minA, maxA] = scaleA;
-    const [minB, maxB] = scaleB;
-
-    const percentage = (valueA - minA) / (maxA - minA);
-    const valueB = percentage * (maxB - minB) + minB;
-
-    return valueB;
-  };
-
-  const styleToString = (style: Record<string, number | string | undefined>): string => {
-    return Object.keys(style).reduce((str, key) => {
-      if (style[key] === undefined) return str;
-      return str + `${key}:${style[key]};`;
-    }, "");
-  };
-
-  return {
-    duration: params.duration ?? 200,
-    delay: 0,
-    css: (t) => {
-      const y = scaleConversion(t, [0, 1], [params.y ?? 5, 0]);
-      const x = scaleConversion(t, [0, 1], [params.x ?? 0, 0]);
-      const scale = scaleConversion(t, [0, 1], [params.start ?? 0.95, 1]);
-
-      return styleToString({
-        transform: `${transform} translate3d(${x}px, ${y}px, 0) scale(${scale})`,
-        opacity: t,
-      });
-    },
-    easing: cubicOut,
-  };
-};
-
 // TYPES ***********************************************************************************************************************************
-export type Message = ActionError["code"] | "SUCCESS";
+export type State<V extends FieldValues = FieldValues> = SafeResult<V, { code: "SUCCESS" }> | undefined;
+
+export type GetValuesForParams<V extends FieldValues> = {
+  defaultValues: V;
+  shouldSkip?: (state: State<V>) => boolean;
+};
+
+export type MessageI18n = Partial<Record<ActionErrorCode | "SUCCESS", string>>;
+export type Message = { description: string; code: ActionErrorCode | "SUCCESS" };

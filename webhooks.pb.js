@@ -1,4 +1,4 @@
-onRecordAfterUpdateRequest(({ collection, record }) => {
+function sendWebhook({ collection, record }) {
   const devUrl = $os.getenv("ASTRO_POCKETBASE_WEBHOOK_DEV_URL");
   const prodUrl = $os.getenv("ASTRO_POCKETBASE_WEBHOOK_PROD_URL");
 
@@ -21,4 +21,8 @@ onRecordAfterUpdateRequest(({ collection, record }) => {
 
   if (prodUrl) sendWebhook(prodUrl);
   if (devUrl) sendWebhook(devUrl);
-});
+}
+
+onRecordAfterCreateRequest(sendWebhook);
+onRecordAfterUpdateRequest(sendWebhook);
+onRecordAfterDeleteRequest(sendWebhook);

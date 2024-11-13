@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Icon } from "astro-icon/components";
 import { tv, type ClassValue } from "tailwind-variants";
-import NavBurger from "./nav-burger.svelte";
+import { NavBurger } from "./nav-burger";
 
 // PROPS ***********************************************************************************************************************************
 const { class: className } = Astro.props;
@@ -23,7 +23,7 @@ const rightNavs = navs.slice(Math.ceil(0.5 * navs.length));
 // STYLES **********************************************************************************************************************************
 const NAV_LINK = tv({
   base: `text-xs font-bold p-2 uppercase rounded group-data-top:text-white hover:bg-primary hover:text-white`,
-  variants: { isActive: { true: "bg-primary text-white" } },
+  variants: { isActive: { true: "bg-primary text-white [view-transition-name:active-page]" } },
 });
 
 // TYPES ***********************************************************************************************************************************
@@ -40,20 +40,20 @@ export type Props = { class: ClassValue };
       </hgroup>
     </a>
 
-    <NavBurger client:media="(max-width: 640px)" {navs} class="sm:hidden">
+    <NavBurger client:media="(max-width: 640px)" {navs} className="sm:hidden">
       <Icon name="ph:list" />
     </NavBurger>
     <ul class="hidden items-center sm:flex">
       {
         leftNavs.map(({ href, isActive, text }) => (
-          <li class="mx-1">
-            <a href={href} class={NAV_LINK({ isActive })}>
+          <li class="mx-1" aria-current={isActive ? "page" : undefined}>
+            <a {href} class={NAV_LINK({ isActive })}>
               {text}
             </a>
           </li>
         ))
       }
-      <li>
+      <li aria-current={Astro.url.pathname === "/" ? "page" : undefined}>
         <a href="/">
           <Icon
             aria-label="Retour à l'accueil"
@@ -64,8 +64,8 @@ export type Props = { class: ClassValue };
       </li>
       {
         rightNavs.map(({ href, isActive, text }) => (
-          <li class="mx-1">
-            <a href={href} class={NAV_LINK({ isActive })}>
+          <li class="mx-1" aria-current={isActive ? "page" : undefined}>
+            <a {href} class={NAV_LINK({ isActive })}>
               {text}
             </a>
           </li>

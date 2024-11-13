@@ -1,11 +1,10 @@
 import netlify from "@astrojs/netlify";
+import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import svelte from "@astrojs/svelte";
 import tailwind from "@astrojs/tailwind";
 import { imageService } from "@unpic/astro/service";
 import icon from "astro-icon";
 import pocketbase from "astro-pocketbase";
-import superforms from "astro-superforms";
 import { defineConfig, envField } from "astro/config";
 import { pascalCase } from "es-toolkit";
 import { FontaineTransform } from "fontaine";
@@ -24,18 +23,17 @@ export default defineConfig({
   },
 
   integrations: [
+    react(),
     tailwind({
       applyBaseStyles: false,
     }),
-    svelte(),
     icon({
       include: {
-        bi: ["envelope-plus", "phone", "pin-map"],
+        bi: ["chevron-left", "chevron-right", "envelope-plus", "phone", "pin-map"],
         ph: ["at", "facebook-logo-thin", "instagram-logo-thin", "list", "youtube-logo-thin"],
       },
     }),
     simpleStackQuery(),
-    superforms(),
     pocketbase({
       ignore: ["users"],
       nameEnumSchema: (name: string) => `z${pascalCase(name)}`,

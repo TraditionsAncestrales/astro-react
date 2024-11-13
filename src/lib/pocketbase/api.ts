@@ -51,7 +51,7 @@ export async function getKnowledgePageRecords(knowledge: string, opts: HelpersFr
   const zEvent = select(zEventsRecord, ["excerpt", "from", "name", "slug", "to", "url"], {
     image: zImage,
     places: zPlacesNames,
-    service: select(zServicesRecord, ["name"]),
+    service: select(zServicesRecord, ["category", "name", "slug"], { knowledge: zKnowledgeSlug }),
   });
 
   const eventFilter = knowledge !== "traditions-ancestrales" ? `service.knowledge.slug="${knowledge}"` : "";
@@ -74,7 +74,7 @@ export async function getKnowledgePageRecords(knowledge: string, opts: HelpersFr
   const zTestimony = select(zTestimoniesRecord, ["author", "text", "title"]);
 
   const [{ items: events }, page, { items: testimonies }] = await Promise.all([
-    getRecords("events", { schema: zEvent, filter: eventFilter }),
+    getRecords("events", { schema: zEvent, filter: eventFilter, sort: "+from" }),
     getRecord({ collection: "pages", slug: knowledge }, { schema: zPage }),
     knowledge === "traditions-ancestrales" ? getRecords("testimonies", { schema: zTestimony }) : { items: [] },
   ]);

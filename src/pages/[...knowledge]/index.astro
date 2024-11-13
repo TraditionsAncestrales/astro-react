@@ -25,8 +25,9 @@ const { consultations, events, post, testimonies, trainings, workshops } = await
 });
 
 // VARS ************************************************************************************************************************************
-const seo = { title: knowledge === "traditions-ancestrales" ? undefined : post.title, description: post.text };
+const seo = { title: knowledge === "traditions-ancestrales" ? undefined : post.title };
 const count = +(consultations.length > 0) + +(workshops.length > 0) + +(trainings.length > 0);
+const eventIntent = count > 0 ? "primary" : "light";
 
 // CACHE ***********************************************************************************************************************************
 Astro.response.headers.set("cache-control", "public, max-age=0, must-revalidate");
@@ -38,11 +39,11 @@ Astro.response.headers.set(
 ---
 
 <Layout {seo}>
-  <PostsItem {post} border="top" class={{ ASIDE: "!max-w-sm" }} />
+  <PostsItem {post} border="top" />
   <RecordsItems title="Consultation" items={consultations} intent={count > 1 ? "primary" : "light"} />
   <RecordsItems title="Atelier" items={workshops} intent="light" />
   <RecordsItems title="Formation" items={trainings} intent={count === 3 ? "white" : "light"} />
-  <RecordsItems title="Événement" items={events} border="bottom" intent={count > 0 ? "primary" : "light"} forceMultiple removeStale>
+  <RecordsItems title="Événement" items={events} border="bottom" intent={eventIntent} forceMultiple removeStale externalLink>
     <div>
       <p>Retrouvez bientôt ici l'ensemble de mes événements.</p>
       <strong>Vous pouvez déjà en obtenir le programme en me faisant une demande via le formulaire de contact.</strong>
