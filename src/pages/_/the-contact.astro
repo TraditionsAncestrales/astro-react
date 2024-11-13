@@ -27,26 +27,25 @@ const message = getContactMessage(state);
 <script>
   const { lat, lng, zoom } = { lat: -21.142_107, lng: 55.294_209, zoom: 17 };
 
+  const observer = new IntersectionObserver(async ([entry]) => {
+    if (!entry.isIntersecting) return;
+    const [L] = await Promise.all([import("leaflet"), import("leaflet/dist/leaflet.css")]);
+    const map = L.map(entry.target as HTMLElement).setView([lat, lng], zoom);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+    L.marker([lat, lng], {
+      icon: L.icon({
+        iconSize: [25, 41],
+        iconAnchor: [10, 41],
+        popupAnchor: [2, -40],
+        iconUrl: "/map/icon.png",
+        iconRetinaUrl: "/map/icon2.png",
+        shadowUrl: "/map/shadow.png",
+      }),
+    }).addTo(map);
+  });
+
   RootElement.ready(($) => {
-    const observer = new IntersectionObserver(async () => {
-      const [L] = await Promise.all([import("leaflet"), import("leaflet/dist/leaflet.css")]);
-      const map = L.map($<HTMLElement>("map")).setView([lat, lng], zoom);
-
-      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
-      L.marker([lat, lng], {
-        icon: L.icon({
-          iconSize: [25, 41],
-          iconAnchor: [10, 41],
-          popupAnchor: [2, -40],
-          iconUrl: "/map/icon.png",
-          iconRetinaUrl: "/map/icon2.png",
-          shadowUrl: "/map/shadow.png",
-        }),
-      }).addTo(map);
-    });
-
     observer.observe($("map"));
-
     return observer.disconnect;
   });
 </script>
