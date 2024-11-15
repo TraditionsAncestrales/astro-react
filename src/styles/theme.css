@@ -1,0 +1,24 @@
+[data-theme="chamanisme"] {
+  --primary: 84 46% 60%; /* ⬅ #a2c86c */
+  --primary-400: 84 46% 78%; /* ⬅ #bed998  primary/75 */
+}
+
+[data-theme="reiki"] {
+  --primary: 52 86% 60%; /* ⬅ #f1DB43 */
+  --primary-400: 52 86% 78%; /* ⬅ #f5e67b  primary/75 */
+}
+
+[data-theme="reves"] {
+  --primary: 331 46% 60%; /* ⬅ #c86c99 */
+  --primary-400: 331 46% 78%; /* ⬅ #d998b8  primary/75 */
+}
+
+[data-theme="tarot"] {
+  --primary: 13 46% 60%; /* ⬅ #c8806c */
+  --primary-400: 13 46% 78%; /* ⬅ #d9a698  primary/75 */
+}
+
+[data-theme="traditions-ancestrales"] {
+  --primary: 278 33% 60%; /* ⬅ #a278bb */
+  --primary-400: 276 33% 78%; /* ⬅ #bca0cf  primary/75 */
+}

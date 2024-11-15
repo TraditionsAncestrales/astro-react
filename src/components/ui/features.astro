@@ -1,0 +1,33 @@
+---
+import type { Feature } from "@/lib/pocketbase/utils";
+import { cn } from "@/lib/utils";
+import type { Intent } from "@/styles/ui";
+import type { ClassValue } from "tailwind-variants";
+
+// PROPS ***********************************************************************************************************************************
+const { class: className, features = [], intent = "white" } = Astro.props;
+if (features.length === 0) return;
+
+// TYPES ***********************************************************************************************************************************
+type Props = { class?: ClassValue; features?: Feature[]; intent?: Intent };
+export type FeaturesProps = Props;
+---
+
+<dl class={cn("w-full p-4", intent === "white" ? "bg-primary/20" : "bg-white/25", className)}>
+  {
+    features.map(({ href, key, value }) => (
+      <div class="flex gap-2">
+        <dd class="flex-none font-bold">{key} :</dd>
+        <dt>
+          {href ? (
+            <a {href} class="hover:underline">
+              {value}
+            </a>
+          ) : (
+            value
+          )}
+        </dt>
+      </div>
+    ))
+  }
+</dl>

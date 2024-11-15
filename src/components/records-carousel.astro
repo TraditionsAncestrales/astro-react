@@ -1,0 +1,102 @@
+---
+import type { Item } from "@/lib/pocketbase/utils";
+import { cn } from "@/lib/utils";
+import { Image } from "@unpic/astro";
+import { BUTTON } from "./ui/button";
+import Features from "./ui/features.astro";
+import { TITLE } from "@/styles/ui";
+import { Icon } from "astro-icon/components";
+
+// PROPS ***********************************************************************************************************************************
+const { class: className, externalLink = false, items, removeStale = false } = Astro.props;
+
+// VARS ************************************************************************************************************************************
+const target = externalLink ? "_blank" : "_self";
+
+// TYPES ***********************************************************************************************************************************
+type Props = { class?: string; items: Item[]; externalLink?: boolean; removeStale?: boolean };
+export type CarouselProps = Props;
+---
+
+<RootElement data={{ removeStale }}>
+  <div role="region" aria-roledescription="carousel" class={cn("relative", className)}>
+    <div data-target="carousel" class="overflow-hidden">
+      <div class="-ml-4 flex">
+        {
+          items.map(({ features, href, image, stale, text, title }) => (
+            <div class="mb-2 min-w-0 max-w-96 shrink-0 grow-0 basis-full pl-4" data-stale={stale}>
+              <div class="flex h-full w-full flex-col bg-white shadow-md">
+                <Image {...image} height={256} width={384} breakpoints={[384, 768]} sizes="24rem" class="flex-none" />
+                <div class="flex flex-1 flex-col gap-4 p-4 px-6 sm:px-8">
+                  <h4 class={TITLE()}>{title}</h4>
+                  <Features {features} intent="white" />
+                  <article set:html={text} class="prose prose-p:my-1 prose-p:leading-normal" />
+                  <div class="flex-1" />
+                  <div class="flex justify-end gap-2">
+                    <a {href} {target} class={BUTTON()}>
+                      En savoir plus
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <button data-target="prev" class={BUTTON({ class: "absolute touch-manipulation rounded-full left-4 top-1/2 -translate-y-1/2" })}>
+      <Icon name="bi:chevron-left" /><span class="sr-only">Précédent</span>
+    </button>
+    <button data-target="next" class={BUTTON({ class: "absolute touch-manipulation rounded-full right-4 top-1/2 -translate-y-1/2" })}>
+      <Icon name="bi:chevron-right" /><span class="sr-only">Suivant</span>
+    </button>
+  </div>
+  <div data-target="none" class="hidden px-6 md:px-12"><slot /></div>
+</RootElement>
+
+<script>
+  import EmblaCarousel, { type EmblaCarouselType } from "embla-carousel";
+
+  RootElement.ready(($, ctx) => {
+    const api = EmblaCarousel($("carousel"), { loop: true });
+    const prev = $<HTMLButtonElement>("prev");
+    const next = $<HTMLButtonElement>("next");
+
+    if (ctx.data.removeStale)
+      for (const slide of api.slideNodes()) {
+        if (slide.dataset.stale && slide.dataset.stale < new Date().toISOString()) slide.remove();
+      }
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        api.scrollPrev();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        api.scrollNext();
+      }
+    }
+
+    function handleReInit(api: EmblaCarouselType) {
+      const container = api.containerNode();
+      api.scrollSnapList().length === 1 ? container.classList.add("justify-center") : container.classList.remove("justify-center");
+      next.disabled = !api.canScrollNext();
+      prev.disabled = !api.canScrollPrev();
+    }
+
+    api.on("reInit", handleReInit);
+
+    prev.addEventListener("keydown", handleKeyDown);
+    prev.addEventListener("click", () => api.scrollPrev());
+
+    next.addEventListener("keydown", handleKeyDown);
+    next.addEventListener("click", () => api.scrollNext());
+
+    setTimeout(() => {
+      if (api.slideNodes().length === 0) $("none").classList.remove("hidden");
+      handleReInit(api);
+    });
+
+    return api.destroy;
+  });
+</script>

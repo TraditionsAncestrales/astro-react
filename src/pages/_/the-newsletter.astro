@@ -1,0 +1,27 @@
+---
+import Section from "@/components/ui/section.astro";
+import { Toaster } from "@/components/ui/sonner";
+import Title from "@/components/ui/title.astro";
+import { defaultNewsletterValues, getNewsletterMessage, getValuesFor } from "@/lib/utils";
+import { actions } from "astro:actions";
+import Form from "./the-newsletter.form";
+
+// PROPS ***********************************************************************************************************************************
+const { ...rest } = Astro.props;
+
+// VARS ************************************************************************************************************************************
+const state = Astro.getActionResult(actions.subscribeToNewsletter);
+const values = await getValuesFor({ defaultValues: defaultNewsletterValues, shouldSkip: (state) => !!state?.data })(Astro.request, state);
+const message = getNewsletterMessage(state);
+---
+
+<Section {...rest}>
+  <Title slot="header" text="Newsletter" class="mb-8" />
+  <div class="flex w-full flex-col gap-4 lg:flex-row lg:gap-12">
+    <p class="text-justify lg:max-w-sm xl:max-w-lg">
+      Pour recevoir chaque semaine mon bulletin, c'est simple, vous avez juste à saisir votre courriel :
+    </p>
+    <Form client:visible initState={state} initValues={values} initMessage={message} className="flex-1" />
+  </div>
+</Section>
+<Toaster client:visible richColors theme="light" />

@@ -1,0 +1,64 @@
+---
+import { BUTTON } from "@/components/ui/button";
+import Section from "@/components/ui/section.astro";
+import Title from "@/components/ui/title.astro";
+import { type Item } from "@/lib/pocketbase/utils";
+import { cn } from "@/lib/utils";
+import { Image } from "@unpic/astro";
+
+// PROPS ***********************************************************************************************************************************
+const { knowledges } = Astro.props;
+if (knowledges.length === 0) return;
+
+// STYLES **********************************************************************************************************************************
+const cAbs = `absolute inset-0 w-full h-full transition-transform duration-500`;
+// const cItem = `hidden w-1/4 h-[600px] relative overflow-hidden group/k flex-col justify-center items-center lg:flex`;
+
+// TYPES ***********************************************************************************************************************************
+type Props = { knowledges: Item[] };
+export type KnowledgesItemsProps = Props;
+---
+
+<div class="-my-16 lg:flex">
+  {
+    knowledges.map(({ href, image, slug, text, title }, i) => (
+      <>
+        <Section intent="primary" class={cn("lg:hidden", { "pt-16": i === 0, "pb-20": i === knowledges.length - 1 })} data-theme={slug}>
+          <Title slot="header" text={title} class="mb-8" />
+          <Image
+            slot="aside"
+            {...image}
+            breakpoints={[320, 640, 960, 1280, 1600, 1920]}
+            sizes="(min-width: 768px) 20rem, calc(100vw - 7rem - 15px)"
+            class="relative aspect-[3/2] shadow-lg shadow-black/50"
+          />
+          <article set:html={text} />
+          <a {href} class={BUTTON({ intent: "secondary", className: "self-end" })}>
+            En savoir plus
+          </a>
+        </Section>
+
+        <a
+          {href}
+          class="group/k relative hidden h-[600px] w-1/4 flex-col items-center justify-center overflow-hidden lg:flex"
+          data-theme={slug}
+        >
+          <Image {...image} breakpoints={[320, 640, 960, 1280]} sizes="25vw" class={cn(cAbs, "-z-20 group-hover/k:scale-105")} />
+          <div class={cn(cAbs, "-z-10 translate-y-full bg-primary group-hover/k:translate-y-0")}>
+            <div class="mt-[150px] px-4 text-center">
+              <article set:html={text} />
+            </div>
+          </div>
+          <Title
+            text={title}
+            class={{
+              ROOT: "transition-transform duration-500 group-hover/k:-translate-y-[200px]",
+              STAIN: "text-primary",
+              TEXT: "px-12 py-6 text-4xl text-black",
+            }}
+          />
+        </a>
+      </>
+    ))
+  }
+</div>

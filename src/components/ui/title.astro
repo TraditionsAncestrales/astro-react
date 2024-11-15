@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon/components";
+import { tv } from "tailwind-variants";
+
+// PROPS ***********************************************************************************************************************************
+const { class: classes = {}, text } = Astro.props;
+if (!text) return;
+
+// STYLES **********************************************************************************************************************************
+const C = typeof classes === "string" ? { ROOT: classes } : classes;
+export const TITLE = tv({
+  slots: {
+    ROOT: `relative inline-flex`,
+    STAIN: `absolute left-0 scale-y-[225%]`,
+    TEXT: `font-heading relative inline-flex uppercase`,
+  },
+});
+
+const { ROOT, STAIN, TEXT } = TITLE();
+
+// TYPES ***********************************************************************************************************************************
+type Props = {
+  class?: Partial<(typeof TITLE)["slots"]> | string;
+  text?: string;
+};
+export type TitleProps = Props;
+---
+
+<div class={ROOT({ className: C.ROOT })}>
+  <Icon name="stain" width="100%" height="100%" class={STAIN({ className: C.STAIN ?? "-top-1 text-primary-400" })} />
+  <h3 class={TEXT({ className: C.TEXT ?? "px-6 py-2 text-3xl" })}>{text}</h3>
+</div>

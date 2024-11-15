@@ -1,0 +1,61 @@
+---
+import Section from "@/components/ui/section.astro";
+import type { getLayout } from "@/lib/api";
+import { cn } from "@/lib/utils";
+import { Icon } from "astro-icon/components";
+import type { ClassValue } from "tailwind-variants";
+
+// PROPS ***********************************************************************************************************************************
+const { config, class: className } = Astro.props;
+const { city, email, facebook, instagram, phone, street, zipcode } = config;
+
+// STYLES **********************************************************************************************************************************
+const SOCIAL = "text-primary hover:text-primary-400";
+
+// TYPES ***********************************************************************************************************************************
+type Config = Awaited<ReturnType<typeof getLayout>>["config"];
+export type Props = { config: Config; class?: ClassValue };
+---
+
+<Section border="top" intent="dark" class={cn("items-center text-white", className)}>
+  <div class="container flex flex-col justify-between gap-8 sm:flex-row sm:items-center">
+    <div class="flex flex-col">
+      <div class="flex items-center gap-4 p-3">
+        <Icon name="bi:pin-map" class="h-6 w-6 text-primary" />
+        <span class="flex-auto">
+          <div>{street}</div>
+          <div>{zipcode} {city}</div>
+        </span>
+      </div>
+      <a href={"mailto:" + email} class="group/email">
+        <div class="flex items-center gap-4 p-3">
+          <Icon name="ph:at" class="h-6 w-6 text-primary group-hover/email:text-primary-400" />
+          <span class="flex-auto">
+            <div>{email}</div>
+          </span>
+        </div>
+      </a>
+      <a href={"tel:" + phone} class="group/phone">
+        <div class="flex items-center gap-4 p-3">
+          <Icon name="bi:phone" class="h-6 w-6 text-primary group-hover/phone:text-primary-400" />
+          <span class="flex-auto">
+            <div>{phone}</div>
+          </span>
+        </div>
+      </a>
+    </div>
+    <div class="flex flex-col gap-3 sm:items-end">
+      <div class="flex items-center justify-center gap-4">
+        <a href={facebook} class={SOCIAL} aria-label="Facebook"><Icon name="ph:facebook-logo-thin" class="h-12 w-12" /></a>
+        <a href={instagram} class={SOCIAL} aria-label="Instagram"><Icon name="ph:instagram-logo-thin" class="h-12 w-12" /></a>
+        <a href="/" class={SOCIAL} aria-label="Youtube"><Icon name="ph:youtube-logo-thin" class="h-12 w-12" /></a>
+      </div>
+      <hr class="w-full border-dashed border-neutral-200" />
+      <div class="flex flex-col items-end">
+        <span>©2022 L'ENVOL - LA RÉUNION</span>
+        <span class="text-sm">Tous droits réservés</span>
+      </div>
+      <a href="/articles/mentions-legales" class="self-end text-sm text-neutral-400 hover:text-white">mentions légales</a>
+    </div>
+  </div>
+</Section>

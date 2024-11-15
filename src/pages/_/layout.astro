@@ -1,0 +1,86 @@
+---
+import "@/styles/globals.css";
+import "@/styles/theme.css";
+import TheFooter from "./the-footer.astro";
+import TheHeader from "./the-header.astro";
+import TheHero from "./the-hero.astro";
+import { cn } from "@/lib/utils";
+import TheOtherKnowledges from "./the-other-knowledges.astro";
+import TheNewsletter from "./the-newsletter.astro";
+import PostsItem from "@/components/posts-item.astro";
+import TheContact from "./the-contact.astro";
+import { ClientRouter } from "astro:transitions";
+// import { Toaster } from "@/components/ui/sonner";
+import { getLayout } from "@/lib/api";
+import LoadingIndicator from "astro-loading-indicator/component";
+import { SEO, type Props as SEOProps } from "astro-seo";
+
+// DATA ************************************************************************************************************************************
+const { config, hero, isHome, isMain, organizationPost, otherKnowledges, theme } = await getLayout(
+  Astro.params.knowledge ?? "traditions-ancestrales",
+  Astro.routePattern === "/[...knowledge]",
+  { pocketbase: Astro.locals.pocketbase, cache: import.meta.env.DEV ? "1d" : undefined }
+);
+
+// PROPS ***********************************************************************************************************************************
+const { seo } = Astro.props;
+
+// CACHE ***********************************************************************************************************************************
+export const layoutCache = ["config", "knowledges", "posts_l-association"];
+
+// TYPES ***********************************************************************************************************************************
+type Props = { seo: SEOProps };
+export type LayoutProps = Props;
+---
+
+<html lang="fr">
+  <head>
+    <SEO
+      titleDefault="Le site d'Océane - Traditions ancestrales"
+      titleTemplate="%s — Traditions ancestrales"
+      description="Site d'Océane Ravasini à propos des traditions ancestrales : chamanisme, rêves, reiki et tarot."
+      charset="utf8"
+      extend={{
+        link: [
+          { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+          { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+          { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
+          { rel: "manifest", href: "/site.webmanifest" },
+          { rel: "sitemap", href: "/sitemap-index.xml" },
+          {
+            rel: "preload",
+            href: "https://niama-traditions-ancestrales.imgix.net/l5oxjx4c9kltz0d/splash_JaAKBlu3Mz.webp?auto=format&q=50",
+            as: "image",
+            crossorigin: "anonymous",
+          },
+        ],
+        meta: [
+          { name: "viewport", content: "width=device-width, initial-scale=1" },
+          { name: "generator", content: Astro.generator },
+        ],
+      }}
+      {...seo}
+    />
+    <ClientRouter />
+    <LoadingIndicator color="hsl(var(--primary))" height="4px" />
+  </head>
+  <body class="group overflow-y-auto overflow-x-hidden" data-theme={theme}>
+    <RootElement><div data-target="scroll"></div></RootElement>
+    <TheHeader class="fixed left-0 top-0 z-30 w-full" />
+    <TheHero {...hero} class={cn(isMain ? "h-screen" : "h-[50vh]")} />
+    <slot />
+    {isHome && <PostsItem post={organizationPost} border="bottom" intent="primary" />}
+    <TheOtherKnowledges knowledges={otherKnowledges} />
+    <TheNewsletter border="top" intent="primary" />
+    {isHome ? <TheContact intent="light" /> : <PostsItem post={organizationPost} class="mb-4" />}
+    <TheFooter {config} />
+  </body>
+</html>
+
+<script>
+  RootElement.ready(($) => {
+    const observer = new IntersectionObserver(([entry]) => (document.body.dataset.scrolled = `${entry.boundingClientRect.y < 0}`));
+    observer.observe($("scroll"));
+    return () => observer.disconnect();
+  });
+</script>

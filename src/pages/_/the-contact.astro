@@ -1,0 +1,51 @@
+---
+import Section from "@/components/ui/section.astro";
+import Title from "@/components/ui/title.astro";
+import { defaultContactValues, getContactMessage, getValuesFor } from "@/lib/utils";
+import { actions } from "astro:actions";
+import Form from "./the-contact.form";
+
+// PROPS ***********************************************************************************************************************************
+const { ...rest } = Astro.props;
+
+// VARS ************************************************************************************************************************************
+const state = Astro.getActionResult(actions.sendMessage);
+const values = await getValuesFor({ defaultValues: defaultContactValues, shouldSkip: (state) => !!state?.data })(Astro.request, state);
+const message = getContactMessage(state);
+---
+
+<Section class="relative" {...rest}>
+  <Title slot="header" text="Me contacter" class="mb-8" />
+  <div class="flex w-full justify-center gap-8 xl:justify-start">
+    <Form client:visible initState={state} initValues={values} initMessage={message} className="w-full max-w-xl pb-96 xl:pb-0" />
+    <RootElement>
+      <figure data-target="map" class="absolute inset-x-0 bottom-0 z-0 h-96 xl:left-auto xl:top-0 xl:h-auto xl:w-1/2"></figure>
+    </RootElement>
+  </div>
+</Section>
+
+<script>
+  const { lat, lng, zoom } = { lat: -21.142_107, lng: 55.294_209, zoom: 17 };
+
+  const observer = new IntersectionObserver(async ([entry]) => {
+    if (!entry.isIntersecting) return;
+    const [L] = await Promise.all([import("leaflet"), import("leaflet/dist/leaflet.css")]);
+    const map = L.map(entry.target as HTMLElement).setView([lat, lng], zoom);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+    L.marker([lat, lng], {
+      icon: L.icon({
+        iconSize: [25, 41],
+        iconAnchor: [10, 41],
+        popupAnchor: [2, -40],
+        iconUrl: "/map/icon.png",
+        iconRetinaUrl: "/map/icon2.png",
+        shadowUrl: "/map/shadow.png",
+      }),
+    }).addTo(map);
+  });
+
+  RootElement.ready(($) => {
+    observer.observe($("map"));
+    return observer.disconnect;
+  });
+</script>

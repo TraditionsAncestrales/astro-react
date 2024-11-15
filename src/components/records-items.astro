@@ -1,0 +1,60 @@
+---
+import type { Item } from "@/lib/pocketbase/utils";
+import { Image } from "@unpic/astro";
+import RecordsCarousel from "./records-carousel.astro";
+import { BUTTON } from "./ui/button";
+import Features from "./ui/features.astro";
+import Section, { type SectionProps } from "./ui/section.astro";
+import Title from "./ui/title.astro";
+
+// PROPS ***********************************************************************************************************************************
+const { externalLink = false, forceMultiple = false, intent = "white", items = [], removeStale, title: singular, ...rest } = Astro.props;
+
+// VARS ************************************************************************************************************************************
+const hasSome = items.length > 0;
+if (!hasSome && !Astro.slots.has("default")) return;
+
+const isSingle = items.length === 1;
+const title = `${singular}${isSingle && !forceMultiple ? "" : "s"}`;
+const { features, href, image, text } = items[0] ?? {};
+
+const sizes = [
+  "(min-width: 1536px) 42rem",
+  "(min-width: 1280px) 36rem",
+  "(min-width: 1024px) 28rem",
+  "(min-width: 768px) 20rem",
+  "calc(100vw - 7rem - 15px)",
+].join(", ");
+
+const target = externalLink ? "_blank" : "_self";
+
+// TYPES ***********************************************************************************************************************************
+type Props = { externalLink?: boolean; forceMultiple?: boolean; items: Item[]; removeStale?: boolean; title: string } & SectionProps;
+export type TrainingsItemsProps = Props;
+---
+
+{
+  isSingle && !forceMultiple ? (
+    <Section {intent} {...rest}>
+      <Title slot="header" text={title} class="mb-8 xl:hidden" />
+      <Image slot="aside" {...image} breakpoints={[320, 640, 960, 1280, 1600]} {sizes} class="relative shadow-lg shadow-black/50" />
+      <Title text={title} class="hidden self-start xl:inline-flex" />
+      <Features {intent} {features} />
+      <article set:html={text} />
+      <a {href} {target} class={BUTTON({ intent: intent === "primary" ? "secondary" : "primary", class: "self-end" })}>
+        En savoir plus
+      </a>
+    </Section>
+  ) : (
+    <Section intent={intent} expanded={hasSome} {...rest}>
+      <Title slot="header" text={title} class="mb-8" />
+      {hasSome ? (
+        <RecordsCarousel {externalLink} {items} {removeStale} class="w-full">
+          <slot />
+        </RecordsCarousel>
+      ) : (
+        <slot />
+      )}
+    </Section>
+  )
+}

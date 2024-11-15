@@ -1,0 +1,53 @@
+---
+import PostsItem from "@/components/posts-item.astro";
+import RecordsItems from "@/components/records-items.astro";
+import { getKnowledgePage, getKnowledgePagePaths } from "@/lib/api";
+import Layout, { layoutCache } from "@/pages/_/layout.astro";
+import { PUBLIC_ASTRO_POCKETBASE_URL } from "astro:env/server";
+import Pocketbase from "pocketbase";
+import TheTestimonies from "./_/the-testimonies.astro";
+
+// PATHS ***********************************************************************************************************************************
+export async function getStaticPaths() {
+  return getKnowledgePagePaths({
+    pocketbase: new Pocketbase(PUBLIC_ASTRO_POCKETBASE_URL),
+    cache: import.meta.env.DEV ? "1d" : undefined,
+  });
+}
+
+// PARAMS **********************************************************************************************************************************
+const { knowledge = "traditions-ancestrales" } = Astro.params;
+
+// DATA ************************************************************************************************************************************
+const { consultations, events, post, testimonies, trainings, workshops } = await getKnowledgePage(knowledge, {
+  pocketbase: Astro.locals.pocketbase,
+  cache: import.meta.env.DEV ? "1d" : undefined,
+});
+
+// VARS ************************************************************************************************************************************
+const seo = { title: knowledge === "traditions-ancestrales" ? undefined : post.title };
+const count = +(consultations.length > 0) + +(workshops.length > 0) + +(trainings.length > 0);
+const eventIntent = count > 0 ? "primary" : "light";
+
+// CACHE ***********************************************************************************************************************************
+Astro.response.headers.set("cache-control", "public, max-age=0, must-revalidate");
+Astro.response.headers.set("netlify-cdn-cache-control", "durable, s-maxage=31536000");
+Astro.response.headers.set(
+  "netlify-cache-tag",
+  [...layoutCache, "events", `pages_${knowledge}`, ...(knowledge === "traditions-ancestrales" ? ["testimonies"] : [])].join(",")
+);
+---
+
+<Layout {seo}>
+  <PostsItem {post} border="top" />
+  <RecordsItems title="Consultation" items={consultations} intent={count > 1 ? "primary" : "light"} />
+  <RecordsItems title="Atelier" items={workshops} intent="light" />
+  <RecordsItems title="Formation" items={trainings} intent={count === 3 ? "white" : "light"} />
+  <RecordsItems title="Événement" items={events} border="bottom" intent={eventIntent} forceMultiple removeStale externalLink>
+    <div>
+      <p>Retrouvez bientôt ici l'ensemble de mes événements.</p>
+      <strong>Vous pouvez déjà en obtenir le programme en me faisant une demande via le formulaire de contact.</strong>
+    </div>
+  </RecordsItems>
+  <TheTestimonies {...testimonies} />
+</Layout>

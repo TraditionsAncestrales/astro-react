@@ -1,0 +1,76 @@
+---
+import { cn } from "@/lib/utils";
+import { Icon } from "astro-icon/components";
+import { tv, type ClassValue } from "tailwind-variants";
+import { NavBurger } from "./nav-burger";
+
+// PROPS ***********************************************************************************************************************************
+const { class: className } = Astro.props;
+
+// VARS ************************************************************************************************************************************
+const navs = [
+  { text: "A propos", href: "/articles/la-fondatrice" },
+  { text: "Chamanisme", href: "/chamanisme" },
+  { text: "Rêves", href: "/reves" },
+  { text: "Reiki", href: "/reiki" },
+  { text: "Tarot", href: "/tarot" },
+  { text: "Boutique", href: "/boutique" },
+].map((item) => ({ ...item, isActive: Astro.url.pathname.startsWith(item.href) }));
+
+const leftNavs = navs.slice(0, Math.ceil(0.5 * navs.length));
+const rightNavs = navs.slice(Math.ceil(0.5 * navs.length));
+
+// STYLES **********************************************************************************************************************************
+const NAV_LINK = tv({
+  base: `text-xs font-bold p-2 uppercase rounded group-data-top:text-white hover:bg-primary hover:text-white`,
+  variants: { isActive: { true: "bg-primary text-white [view-transition-name:active-page]" } },
+});
+
+// TYPES ***********************************************************************************************************************************
+export type Props = { class: ClassValue };
+---
+
+<div class={cn(`bg-white p-2 sm:bg-transparent group-data-scrolled:bg-white group-data-scrolled:shadow-lg`, className)}>
+  <nav class="container mx-auto flex items-center justify-between sm:justify-center sm:group-data-scrolled:justify-between">
+    <a href="/" aria-label="Retour à l'accueil" class="flex items-center gap-1 group-data-scrolled:flex sm:hidden">
+      <Icon name="logo" class="h-12 w-12 fill-neutral-800 text-primary hover:text-primary-400" />
+      <hgroup class="font-heading uppercase">
+        <h3 class="text-sm leading-none text-neutral-800">Traditions</h3>
+        <h4 class="text-xs leading-none text-neutral-500">Ancestrales</h4>
+      </hgroup>
+    </a>
+
+    <NavBurger client:media="(max-width: 640px)" {navs} className="sm:hidden">
+      <Icon name="ph:list" />
+    </NavBurger>
+    <ul class="hidden items-center sm:flex">
+      {
+        leftNavs.map(({ href, isActive, text }) => (
+          <li class="mx-1" aria-current={isActive ? "page" : undefined}>
+            <a {href} class={NAV_LINK({ isActive })}>
+              {text}
+            </a>
+          </li>
+        ))
+      }
+      <li aria-current={Astro.url.pathname === "/" ? "page" : undefined}>
+        <a href="/">
+          <Icon
+            aria-label="Retour à l'accueil"
+            name="logo"
+            class="mx-8 h-20 w-20 fill-neutral-800 text-primary hover:text-primary-400 group-data-scrolled:hidden"
+          />
+        </a>
+      </li>
+      {
+        rightNavs.map(({ href, isActive, text }) => (
+          <li class="mx-1" aria-current={isActive ? "page" : undefined}>
+            <a {href} class={NAV_LINK({ isActive })}>
+              {text}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</div>
