@@ -30,14 +30,13 @@ export async function getLayout(knowledge: string | undefined, isMain: boolean, 
   const knowledges = data.knowledges.map((knowledge) => itemFromKnowledge(knowledge));
   const organizationPost = itemFromPost(data.organizationPost);
 
-  const theme = knowledge ?? "traditions-ancestrales";
-  const isHome = isMain && theme === "traditions-ancestrales";
-  const currentKnowledge = knowledges.find(({ slug }) => slug === theme);
+  const isHome = isMain && knowledge === "traditions-ancestrales";
+  const currentKnowledge = knowledges.find(({ slug }) => slug === knowledge);
   if (!currentKnowledge) throw new Error("Unknown knowledge");
-  const otherKnowledges = knowledges.filter(({ slug }) => slug !== theme);
+  const otherKnowledges = knowledges.filter(({ slug }) => slug !== knowledge);
   const hero = { image: currentKnowledge.image, subtitle: config.title, title: currentKnowledge.title };
 
-  return { config, hero, isHome, isMain, organizationPost, otherKnowledges, theme };
+  return { config, hero, isHome, isMain, organizationPost, otherKnowledges, theme: knowledge };
 }
 
 // KNOWLEDGE PAGE **************************************************************************************************************************
@@ -51,9 +50,9 @@ export async function getKnowledgePagePaths(opts: HelpersFromOpts) {
   return knowledges.map((knowledge) => pathFromKnowledge(knowledge));
 }
 
-export async function getKnowledgePage(knowledge: string | undefined, opts: HelpersFromOpts) {
-  const isHome = knowledge === undefined;
-  const { page, ...data } = await getKnowledgePageRecords(knowledge ?? "traditions-ancestrales", opts);
+export async function getKnowledgePage(knowledge: string, opts: HelpersFromOpts) {
+  const isHome = knowledge === "traditions-ancestrales";
+  const { page, ...data } = await getKnowledgePageRecords(knowledge, opts);
   const events = data.events.map((event) => itemFromEvent(event));
   const post = isHome ? { ...itemFromPost(page.post), title: "Bienvenue" } : itemFromPost(page.post);
   const services = (page.services ?? []).map((service) => itemFromService(service));

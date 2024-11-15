@@ -16,6 +16,11 @@ export default defineConfig({
   adapter: netlify(),
   output: "server",
 
+  prefetch: {
+    defaultStrategy: "load",
+    prefetchAll: true,
+  },
+
   image: {
     service: imageService({
       placeholder: "blurhash",
@@ -30,7 +35,7 @@ export default defineConfig({
     icon({
       include: {
         bi: ["chevron-left", "chevron-right", "envelope-plus", "phone", "pin-map"],
-        ph: ["at", "facebook-logo-thin", "instagram-logo-thin", "list", "youtube-logo-thin"],
+        ph: ["at", "calendar-heart-thin", "facebook-logo-thin", "instagram-logo-thin", "list", "youtube-logo-thin"],
       },
     }),
     simpleStackQuery(),

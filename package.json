@@ -16,6 +16,7 @@
     "@astrojs/react": "^3.6.2",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.2",
+    "@calcom/embed-react": "^1.5.1",
     "@changesets/cli": "^2.27.9",
     "@fontsource-variable/raleway": "^5.1.0",
     "@formkit/tempo": "^0.1.2",
