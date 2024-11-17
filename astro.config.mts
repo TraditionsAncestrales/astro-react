@@ -15,7 +15,7 @@ export default defineConfig({
   site: "https://traditionsancestrales.fr",
   output: "server",
   adapter: vercel({
-    isr: { bypassToken: import.meta.env.VERCEL_REVALIDATE_TOKEN, exclude: ["/api/invalidate"] },
+    isr: { bypassToken: process.env.VERCEL_REVALIDATE_TOKEN, exclude: ["/api/invalidate"] },
   }),
 
   prefetch: {
