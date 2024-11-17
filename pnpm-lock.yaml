@@ -56,6 +56,9 @@ importers:
       '@unpic/astro':
         specifier: ^0.0.47
         version: 0.0.47(astro@5.0.0-beta.7(@types/node@22.9.0)(jiti@2.4.0)(rollup@4.25.0)(typescript@5.6.3)(yaml@2.6.0))
+      '@vercel/speed-insights':
+        specifier: ^1.1.0
+        version: 1.1.0(react@19.0.0-rc-2ec26bc4-20241111)(svelte@5.1.15)
       astro:
         specifier: 5.0.0-beta.7
         version: 5.0.0-beta.7(@types/node@22.9.0)(jiti@2.4.0)(rollup@4.25.0)(typescript@5.6.3)(yaml@2.6.0)
@@ -1465,6 +1468,29 @@ packages:
     resolution: {integrity: sha512-mwuyUxskdcV8dd7N7JnxBgvFEz1D9UOePI/WyLLzktv6HSCwgPNQGit/UJ2IykAWGlypKw4pBQjOKWvIbXITSg==}
     engines: {node: '>=16'}
     hasBin: true
+
+  '@vercel/speed-insights@1.1.0':
+    resolution: {integrity: sha512-rAXxuhhO4mlRGC9noa5F7HLMtGg8YF1zAN6Pjd1Ny4pII4cerhtwSG4vympbCl+pWkH7nBS9kVXRD4FAn54dlg==}
+    peerDependencies:
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   '@vitejs/plugin-react@4.3.3':
     resolution: {integrity: sha512-NooDe9GpHGqNns1i8XDERg0Vsg5SSYRhRxxyTGogUdkdNt47jal+fbuYi+Yfq6pzRCKXyoPcWisfxE6RIM3GKA==}
@@ -6147,6 +6173,11 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@vercel/speed-insights@1.1.0(react@19.0.0-rc-2ec26bc4-20241111)(svelte@5.1.15)':
+    optionalDependencies:
+      react: 19.0.0-rc-2ec26bc4-20241111
+      svelte: 5.1.15
 
   '@vitejs/plugin-react@4.3.3(vite@6.0.0-beta.6(@types/node@22.9.0)(jiti@2.4.0)(yaml@2.6.0))':
     dependencies:

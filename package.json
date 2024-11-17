@@ -27,6 +27,7 @@
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@unpic/astro": "^0.0.47",
+    "@vercel/speed-insights": "^1.1.0",
     "astro": "5.0.0-beta.7",
     "astro-icon": "^1.1.2",
     "astro-loading-indicator": "^0.6.0",

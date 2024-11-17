@@ -13,6 +13,7 @@ import { ClientRouter } from "astro:transitions";
 import { getLayout } from "@/lib/api";
 import LoadingIndicator from "astro-loading-indicator/component";
 import { SEO, type Props as SEOProps } from "astro-seo";
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 // DATA ************************************************************************************************************************************
 const { config, hero, isHome, isMain, organizationPost, otherKnowledges, theme } = await getLayout(
@@ -65,6 +66,7 @@ export type LayoutProps = Props;
     <TheNewsletter border="top" intent="primary" />
     {isHome ? <TheContact intent="light" /> : <PostsItem post={organizationPost} class="mb-4" />}
     <TheFooter {config} />
+    <SpeedInsights />
   </body>
 </html>
 
