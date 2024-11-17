@@ -1,19 +1,9 @@
 ---
 import PostsItem from "@/components/posts-item.astro";
 import RecordsItems from "@/components/records-items.astro";
-import { getKnowledgePage, getKnowledgePagePaths } from "@/lib/api";
+import { getKnowledgePage } from "@/lib/api";
 import Layout from "@/pages/_/layout.astro";
-import { PUBLIC_ASTRO_POCKETBASE_URL } from "astro:env/server";
-import Pocketbase from "pocketbase";
 import TheTestimonies from "./_/the-testimonies.astro";
-
-// PATHS ***********************************************************************************************************************************
-export async function getStaticPaths() {
-  return getKnowledgePagePaths({
-    pocketbase: new Pocketbase(PUBLIC_ASTRO_POCKETBASE_URL),
-    cache: import.meta.env.DEV ? "1d" : undefined,
-  });
-}
 
 // PARAMS **********************************************************************************************************************************
 const { knowledge = "traditions-ancestrales" } = Astro.params;
