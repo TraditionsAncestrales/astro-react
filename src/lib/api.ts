@@ -10,6 +10,9 @@ import {
   entryFromKnowledge,
   entryFromPost,
   entryFromService,
+  hrefFromKnowledge,
+  hrefFromPost,
+  hrefFromService,
   imageFrom,
   itemFromEvent,
   itemFromKnowledge,
@@ -39,6 +42,11 @@ export async function getLayout(knowledge: string | undefined, isMain: boolean, 
   return { config, hero, isHome, isMain, organizationPost, otherKnowledges, theme: knowledge };
 }
 
+export async function getLayoutUrls(opts: HelpersFromOpts) {
+  const [singleUrls, knowledgeUrls] = await Promise.all([getKnowledgeCollectionSlugPageUrls(opts), getKnowledgePageUrls(opts)]);
+  return [...singleUrls, ...knowledgeUrls, "/boutique"];
+}
+
 // KNOWLEDGE PAGE **************************************************************************************************************************
 export async function getKnowledgePageEntries(opts: HelpersFromOpts) {
   const { knowledges } = await getKnowledgePageEntriesRecords(opts);
@@ -48,6 +56,11 @@ export async function getKnowledgePageEntries(opts: HelpersFromOpts) {
 export async function getKnowledgePagePaths(opts: HelpersFromOpts) {
   const { knowledges } = await getKnowledgePageEntriesRecords(opts);
   return knowledges.map((knowledge) => pathFromKnowledge(knowledge));
+}
+
+export async function getKnowledgePageUrls(opts: HelpersFromOpts) {
+  const { knowledges } = await getKnowledgePageEntriesRecords(opts);
+  return knowledges.map((knowledge) => hrefFromKnowledge(knowledge));
 }
 
 export async function getKnowledgePage(knowledge: string, opts: HelpersFromOpts) {
@@ -72,6 +85,11 @@ export async function getKnowledgeCollectionSlugPageEntries(opts: HelpersFromOpt
 export async function getKnowledgeCollectionSlugPagePaths(opts: HelpersFromOpts) {
   const { posts, services } = await getKnowledgeCollectionSlugPageEntriesRecords(opts);
   return [...posts.map((post) => pathFromPost(post)), ...services.map((service) => pathFromService(service))];
+}
+
+export async function getKnowledgeCollectionSlugPageUrls(opts: HelpersFromOpts) {
+  const { posts, services } = await getKnowledgeCollectionSlugPageEntriesRecords(opts);
+  return [...posts.map((post) => hrefFromPost(post)), ...services.map((service) => hrefFromService(service))];
 }
 
 export async function getKnowledgeCollectionSlugPage(collection: string, slug: string, opts: HelpersFromOpts) {
