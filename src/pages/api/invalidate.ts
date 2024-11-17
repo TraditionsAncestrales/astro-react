@@ -8,7 +8,7 @@ export const POST: APIRoute = async ({ request }) => {
     const { tags } = z.object({ tags: z.string().array() }).parse(payload);
     console.log("purging", tags);
     let urls = tags.length === 1 && tags[0] === "all" ? [] : tags;
-    console.log("url", request.url);
+    console.log("url", new URL(request.url).host);
     for (const url of urls) {
       // const url = new URL(path, new URL(request.url).host)
       // await fetch(url.toString(), { method: "GET", headers: { "x-prerender-revalidate": VERCEL_REVALIDATE_TOKEN } });
