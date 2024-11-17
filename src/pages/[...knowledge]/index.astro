@@ -2,7 +2,7 @@
 import PostsItem from "@/components/posts-item.astro";
 import RecordsItems from "@/components/records-items.astro";
 import { getKnowledgePage, getKnowledgePagePaths } from "@/lib/api";
-import Layout, { layoutCache } from "@/pages/_/layout.astro";
+import Layout from "@/pages/_/layout.astro";
 import { PUBLIC_ASTRO_POCKETBASE_URL } from "astro:env/server";
 import Pocketbase from "pocketbase";
 import TheTestimonies from "./_/the-testimonies.astro";
@@ -28,14 +28,6 @@ const { consultations, events, post, testimonies, trainings, workshops } = await
 const seo = { title: knowledge === "traditions-ancestrales" ? undefined : post.title };
 const count = +(consultations.length > 0) + +(workshops.length > 0) + +(trainings.length > 0);
 const eventIntent = count > 0 ? "primary" : "light";
-
-// CACHE ***********************************************************************************************************************************
-Astro.response.headers.set("cache-control", "public, max-age=0, must-revalidate");
-Astro.response.headers.set("netlify-cdn-cache-control", "durable, s-maxage=31536000");
-Astro.response.headers.set(
-  "netlify-cache-tag",
-  [...layoutCache, "events", `pages_${knowledge}`, ...(knowledge === "traditions-ancestrales" ? ["testimonies"] : [])].join(",")
-);
 ---
 
 <Layout {seo}>

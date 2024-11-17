@@ -10,7 +10,6 @@ import TheNewsletter from "./the-newsletter.astro";
 import PostsItem from "@/components/posts-item.astro";
 import TheContact from "./the-contact.astro";
 import { ClientRouter } from "astro:transitions";
-// import { Toaster } from "@/components/ui/sonner";
 import { getLayout } from "@/lib/api";
 import LoadingIndicator from "astro-loading-indicator/component";
 import { SEO, type Props as SEOProps } from "astro-seo";
@@ -24,9 +23,6 @@ const { config, hero, isHome, isMain, organizationPost, otherKnowledges, theme }
 
 // PROPS ***********************************************************************************************************************************
 const { seo } = Astro.props;
-
-// CACHE ***********************************************************************************************************************************
-export const layoutCache = ["config", "knowledges", "posts_l-association"];
 
 // TYPES ***********************************************************************************************************************************
 type Props = { seo: SEOProps };
