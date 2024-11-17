@@ -14,7 +14,9 @@ import simpleStackQuery from "simple-stack-query";
 export default defineConfig({
   site: "https://traditionsancestrales.fr",
   output: "server",
-  adapter: vercel(),
+  adapter: vercel({
+    isr: { bypassToken: import.meta.env.VERCEL_REVALIDATE_TOKEN, exclude: ["/api/invalidate"] },
+  }),
 
   prefetch: {
     defaultStrategy: "load",
@@ -66,6 +68,7 @@ export default defineConfig({
       PUBLIC_ASTRO_POCKETBASE_URL: envField.string({ context: "server", access: "public" }),
       PUBLIC_IMGIX_URL: envField.string({ context: "server", access: "public" }),
       RESEND_API_KEY: envField.string({ context: "server", access: "secret" }),
+      VERCEL_REVALIDATE_TOKEN: envField.string({ context: "server", access: "secret" }),
     },
   },
 });
