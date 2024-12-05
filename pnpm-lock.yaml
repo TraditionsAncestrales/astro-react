@@ -70,7 +70,7 @@ importers:
         version: 0.6.1(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.1))
       astro-pocketbase:
         specifier: ^0.10.4
-        version: 0.10.4(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.1))(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.22.1)(zod@3.23.8)
+        version: 0.10.4(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.1))(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8)
       astro-seo:
         specifier: ^0.8.4
         version: 0.8.4(prettier-plugin-astro@0.14.1)(prettier@3.4.2)(typescript@5.7.2)
@@ -111,8 +111,8 @@ importers:
         specifier: ^0.4.3
         version: 0.4.3(react-dom@19.0.0-rc-2ec26bc4-20241111(react@19.0.0-rc-2ec26bc4-20241111))(react@19.0.0-rc-2ec26bc4-20241111)
       pocketbase:
-        specifier: ^0.22.1
-        version: 0.22.1
+        specifier: <0.22.0
+        version: 0.21.5
       react:
         specifier: 19.0.0-rc-2ec26bc4-20241111
         version: 19.0.0-rc-2ec26bc4-20241111
@@ -3600,8 +3600,8 @@ packages:
     resolution: {integrity: sha512-LKWqWJRhstyYo9pGvgor/ivk2w94eSjE3RGVuzLGlr3NmD8bf7RcYGze1mNdEHRP6TRP6rMuDHk5t44hnTRyow==}
     engines: {node: '>=14.19.0'}
 
-  pocketbase@0.22.1:
-    resolution: {integrity: sha512-hnzpDcIx5kbkUJXz6IkiTox6R4nb706u4rPSMy2FYCaI2OqBnFxbY0qwWBSqx1ERz/Xi61Uguf17Gb9bWZ8+kw==}
+  pocketbase@0.21.5:
+    resolution: {integrity: sha512-bnI/uinnQps+ElSlzxkc4yvwuSFfKcoszDtXH/4QT2FhGq2mJVUvDlxn+rjRXVntUjPfmMG5LEPZ1eGqV6ssog==}
 
   possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
@@ -6430,15 +6430,15 @@ snapshots:
     dependencies:
       astro: 5.0.2(@types/node@22.10.1)(jiti@2.4.1)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.1)
 
-  astro-pocketbase@0.10.4(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.1))(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.22.1)(zod@3.23.8):
+  astro-pocketbase@0.10.4(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.1))(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8):
     dependencies:
       astro: 5.0.2(@types/node@22.10.1)(jiti@2.4.1)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.1)
       astro-integration-kit: 0.17.0(astro@5.0.2(@types/node@22.10.1)(jiti@2.4.1)(rollup@4.28.0)(typescript@5.7.2)(yaml@2.6.1))
       dotenv: 16.4.7
       es-toolkit: 1.29.0
-      pocketbase: 0.22.1
+      pocketbase: 0.21.5
       zod: 3.23.8
-      zod-pocketbase: 0.3.8(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.22.1)(zod@3.23.8)
+      zod-pocketbase: 0.3.8(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8)
     transitivePeerDependencies:
       - encoding
       - magicast
@@ -8783,7 +8783,7 @@ snapshots:
 
   pngjs@7.0.0: {}
 
-  pocketbase@0.22.1: {}
+  pocketbase@0.21.5: {}
 
   possible-typed-array-names@1.0.0: {}
 
@@ -10139,14 +10139,14 @@ snapshots:
 
   zimmerframe@1.1.2: {}
 
-  zod-pocketbase@0.3.8(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.22.1)(zod@3.23.8):
+  zod-pocketbase@0.3.8(encoding@0.1.13)(magicast@0.3.5)(pocketbase@0.21.5)(zod@3.23.8):
     dependencies:
       '@11ty/eleventy-fetch': 4.0.1(encoding@0.1.13)
       '@clack/prompts': 0.7.0
       c12: 2.0.1(magicast@0.3.5)
       citty: 0.1.6
       es-toolkit: 1.29.0
-      pocketbase: 0.22.1
+      pocketbase: 0.21.5
       zod: 3.23.8
     transitivePeerDependencies:
       - encoding
