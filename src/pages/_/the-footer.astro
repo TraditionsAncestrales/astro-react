@@ -1,6 +1,6 @@
 ---
 import Section from "@/components/ui/section.astro";
-import type { getLayout } from "@/lib/api";
+import type { Config } from "@/lib/pocketbase";
 import { cn } from "@/lib/utils";
 import { Icon } from "astro-icon/components";
 import type { ClassValue } from "tailwind-variants";
@@ -13,7 +13,6 @@ const { city, email, facebook, instagram, phone, street, zipcode } = config;
 const SOCIAL = "text-primary hover:text-primary-400";
 
 // TYPES ***********************************************************************************************************************************
-type Config = Awaited<ReturnType<typeof getLayout>>["config"];
 export type Props = { config: Config; class?: ClassValue };
 ---
 

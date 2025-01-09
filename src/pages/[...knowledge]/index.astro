@@ -1,7 +1,7 @@
 ---
 import PostsItem from "@/components/posts-item.astro";
 import RecordsItems from "@/components/records-items.astro";
-import { getKnowledgePage } from "@/lib/api";
+import { getEvents, getPage, getTestimonies } from "@/lib/pocketbase";
 import Layout from "@/pages/_/layout.astro";
 import TheTestimonies from "./_/the-testimonies.astro";
 
@@ -9,12 +9,15 @@ import TheTestimonies from "./_/the-testimonies.astro";
 const { knowledge = "traditions-ancestrales" } = Astro.params;
 
 // DATA ************************************************************************************************************************************
-const { consultations, events, post, testimonies, trainings, workshops } = await getKnowledgePage(knowledge, {
-  pocketbase: Astro.locals.pocketbase,
-  cache: import.meta.env.DEV ? "1d" : undefined,
-});
+const [{ consultations, post, testimoniesImage, trainings, workshops }, allEvents, testimonies] = await Promise.all([
+  getPage(knowledge, Astro.locals),
+  getEvents(Astro.locals),
+  getTestimonies(Astro.locals),
+]);
 
 // VARS ************************************************************************************************************************************
+const isHome = knowledge === "traditions-ancestrales";
+const events = isHome ? allEvents : allEvents.filter(({ slug }) => slug === knowledge);
 const seo = { title: knowledge === "traditions-ancestrales" ? undefined : post.title };
 const count = +(consultations.length > 0) + +(workshops.length > 0) + +(trainings.length > 0);
 const eventIntent = count > 0 ? "primary" : "light";
@@ -31,5 +34,5 @@ const eventIntent = count > 0 ? "primary" : "light";
       <strong>Vous pouvez déjà en obtenir le programme en me faisant une demande via le formulaire de contact.</strong>
     </div>
   </RecordsItems>
-  <TheTestimonies {...testimonies} />
+  {isHome && <TheTestimonies items={testimonies} image={testimoniesImage} />}
 </Layout>
