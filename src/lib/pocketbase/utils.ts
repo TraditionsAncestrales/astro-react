@@ -24,7 +24,7 @@ function strictItemFromEvent(event: EventForItem) {
     { key: "Au", value: format({ date: to, format: { date: "full", time: "short" }, locale: "fr", tz: "Indian/Reunion" }) },
     { key: "Endroits", value: places.map(({ name }) => name).join(" ou ") },
   ];
-  return { features, href, image: imageFrom(image), slug, stale: to.toISOString(), text, title };
+  return { features, href, image: imageFrom(image), knowledge: service.knowledge.slug, slug, stale: to.toISOString(), text, title };
 }
 export const itemFromEvent = allowUndefined(strictItemFromEvent);
 

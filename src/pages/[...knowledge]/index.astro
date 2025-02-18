@@ -17,7 +17,7 @@ const [{ consultations, post, testimoniesImage, trainings, workshops }, allEvent
 
 // VARS ************************************************************************************************************************************
 const isHome = knowledge === "traditions-ancestrales";
-const events = isHome ? allEvents : allEvents.filter(({ slug }) => slug === knowledge);
+const events = isHome ? allEvents : allEvents.filter(({ knowledge: knowledgeSlug }) => knowledgeSlug === knowledge);
 const seo = { title: knowledge === "traditions-ancestrales" ? undefined : post.title };
 const count = +(consultations.length > 0) + +(workshops.length > 0) + +(trainings.length > 0);
 const eventIntent = count > 0 ? "primary" : "light";
