@@ -1,4 +1,4 @@
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import type { PropsWithChildren } from "react";
 import { tv } from "tailwind-variants";
 
@@ -18,11 +18,14 @@ const NAV_BURGER = tv({
 const { LINK, ROOT } = NAV_BURGER();
 
 // MAIN **********************************************************************************************************************************
-export function NavBurger({ className, children, navs }: NavBurgerProps) {
+export function NavBurger({ className, children, close, navs }: NavBurgerProps) {
   return (
     <Sheet>
       <SheetTrigger className={ROOT({ className })}>{children}</SheetTrigger>
-      <SheetContent>
+      <SheetContent icon={close}>
+        <SheetHeader>
+          <SheetTitle></SheetTitle>
+        </SheetHeader>
         {navs.map(({ href, isActive, text }, i) => (
           <a key={i} href={href} className={LINK({ isActive })}>
             {text}
@@ -36,5 +39,6 @@ export function NavBurger({ className, children, navs }: NavBurgerProps) {
 // TYPES *********************************************************************************************************************************
 export type NavBurgerProps = PropsWithChildren<{
   className: string;
+  close?: React.ReactNode;
   navs: { href: string; isActive: boolean; text: string }[];
 }>;

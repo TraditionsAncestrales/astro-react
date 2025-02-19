@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import * as React from "react";
 
 type CarouselApi = UseEmblaCarouselType[1];
@@ -166,7 +165,7 @@ function CarouselPrevious({ className, intent = "primary", ...props }: React.Com
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft />
+      {/* <Icon name="bi:arrow-left-short" /> */}
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -188,7 +187,7 @@ function CarouselNext({ className, intent = "primary", ...props }: React.Compone
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
+      {/* <Icon name="bi:arrow-right-short" /> */}
       <span className="sr-only">Next slide</span>
     </Button>
   );

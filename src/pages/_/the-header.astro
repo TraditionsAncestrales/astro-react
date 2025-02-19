@@ -42,6 +42,7 @@ export type Props = { class: ClassValue };
 
     <NavBurger client:media="(max-width: 640px)" {navs} className="sm:hidden">
       <Icon name="ph:list" />
+      <Icon slot="close" name="bi:x" />
     </NavBurger>
     <ul class="hidden items-center sm:flex">
       {

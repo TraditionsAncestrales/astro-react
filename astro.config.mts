@@ -30,7 +30,7 @@ export default defineConfig({
     }),
     icon({
       include: {
-        bi: ["chevron-left", "chevron-right", "envelope-plus", "phone", "pin-map"],
+        bi: ["chevron-left", "chevron-right", "envelope-plus", "phone", "pin-map", "x"],
         ph: ["at", "calendar-heart-thin", "facebook-logo-thin", "instagram-logo-thin", "list", "youtube-logo-thin"],
       },
     }),
