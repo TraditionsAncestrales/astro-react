@@ -1,7 +1,7 @@
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
+import tailwindcss from "@tailwindcss/vite";
 import { imageService } from "@unpic/astro/service";
 import icon from "astro-icon";
 import pocketbase from "astro-pocketbase";
@@ -10,29 +10,23 @@ import { pascalCase } from "es-toolkit";
 import { FontaineTransform } from "fontaine";
 import simpleStackQuery from "simple-stack-query";
 
-// https://astro.build/config
 export default defineConfig({
   site: "https://traditionsancestrales.fr",
   output: "server",
-  adapter: vercel({
-    isr: { bypassToken: process.env.VERCEL_REVALIDATE_TOKEN, exclude: ["/api/invalidate"] },
-  }),
-
+  adapter: vercel({ isr: { bypassToken: process.env.VERCEL_REVALIDATE_TOKEN, exclude: ["/api/invalidate"] } }),
   prefetch: {
     defaultStrategy: "load",
     prefetchAll: true,
   },
-
   image: {
-    service: imageService({
-      placeholder: "blurhash",
-    }),
+    service: imageService({ placeholder: "blurhash" }),
   },
-
   integrations: [
     react(),
-    tailwind({
-      applyBaseStyles: false,
+    pocketbase({
+      ignore: ["users"],
+      nameEnumSchema: (name: string) => `z${pascalCase(name)}`,
+      nameRecordSchema: (name: string) => `z${pascalCase(name)}Record`,
     }),
     icon({
       include: {
@@ -41,23 +35,17 @@ export default defineConfig({
       },
     }),
     simpleStackQuery(),
-    pocketbase({
-      ignore: ["users"],
-      nameEnumSchema: (name: string) => `z${pascalCase(name)}`,
-      nameRecordSchema: (name: string) => `z${pascalCase(name)}Record`,
-    }),
     sitemap(),
   ],
-
   vite: {
     plugins: [
+      tailwindcss(),
       FontaineTransform.vite({
         fallbacks: ["Arial"],
         resolvePath: (id) => new URL(id.startsWith("/") ? `public/${id.slice(1)}` : `node_modules/${id}`, import.meta.url),
       }),
     ],
   },
-
   env: {
     schema: {
       ASTRO_POCKETBASE_ADMIN_EMAIL: envField.string({ context: "server", access: "secret" }),

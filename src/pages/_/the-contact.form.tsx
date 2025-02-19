@@ -81,7 +81,7 @@ export default function TheContactForm({ className, initState, initValues, initM
             <FormItem>
               <FormLabel>Votre message</FormLabel>
               <FormControl>
-                <Textarea rows={5} {...field} />
+                <Textarea {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

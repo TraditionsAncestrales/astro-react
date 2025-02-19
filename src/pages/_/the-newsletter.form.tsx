@@ -62,11 +62,11 @@ export default function TheNewsletterForm({ className, initMessage, initState, i
           control={control}
           name="email"
           render={({ field }) => (
-            <FormItem className="w-full sm:max-w-xs xl:max-w-sm">
+            <FormItem className="relative w-full sm:max-w-xs xl:max-w-sm">
               <FormControl>
                 <Input type="email" placeholder="Votre courriel..." {...field} className={INPUT} />
               </FormControl>
-              <FormMessage className="absolute text-destructive-400" />
+              <FormMessage className="text-destructive-400 absolute -bottom-6" />
             </FormItem>
           )}
         />

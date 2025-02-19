@@ -1,19 +1,19 @@
 ---
-import "@/styles/globals.css";
+import "@/styles/global.css";
 import "@/styles/theme.css";
-import TheFooter from "./the-footer.astro";
+import { SEO, type Props as SEOProps } from "astro-seo";
 import TheHeader from "./the-header.astro";
+import { ClientRouter } from "astro:transitions";
+import { getConfig, getKnowledges, getPostItem, heroFrom, otherKnowledgesFrom } from "@/lib/pocketbase";
 import TheHero from "./the-hero.astro";
 import { cn } from "@/lib/utils";
+import PostsItem from "@/components/posts-item.astro";
 import TheOtherKnowledges from "./the-other-knowledges.astro";
 import TheNewsletter from "./the-newsletter.astro";
-import PostsItem from "@/components/posts-item.astro";
 import TheContact from "./the-contact.astro";
-import { ClientRouter } from "astro:transitions";
-import LoadingIndicator from "astro-loading-indicator/component";
-import { SEO, type Props as SEOProps } from "astro-seo";
+import TheFooter from "./the-footer.astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import { getConfig, getKnowledges, getPostItem, heroFrom, otherKnowledgesFrom } from "@/lib/pocketbase";
+import LoadingIndicator from "astro-loading-indicator/component";
 
 // PARAMS **********************************************************************************************************************************
 const { knowledge = "traditions-ancestrales" } = Astro.params;
@@ -39,6 +39,7 @@ type Props = { seo: SEOProps };
 export type LayoutProps = Props;
 ---
 
+<!doctype html>
 <html lang="fr">
   <head>
     <SEO
@@ -65,9 +66,9 @@ export type LayoutProps = Props;
     <ClientRouter />
     <LoadingIndicator color="hsl(var(--primary))" height="4px" />
   </head>
-  <body class="group overflow-y-auto overflow-x-hidden" data-theme={knowledge}>
+  <body class="group overflow-x-hidden overflow-y-auto" data-theme={knowledge}>
     <RootElement><div data-target="scroll"></div></RootElement>
-    <TheHeader class="fixed left-0 top-0 z-30 w-full" />
+    <TheHeader class="fixed top-0 left-0 z-30 w-full" />
     <TheHero {...hero} class={cn(isMain ? "h-screen" : "h-[50vh]")} />
     <slot />
     {isHome && <PostsItem post={organizationPost} border="bottom" intent="primary" />}

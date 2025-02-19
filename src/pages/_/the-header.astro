@@ -33,7 +33,7 @@ export type Props = { class: ClassValue };
 <div class={cn(`bg-white p-2 sm:bg-transparent group-data-scrolled:bg-white group-data-scrolled:shadow-lg`, className)}>
   <nav class="container mx-auto flex items-center justify-between sm:justify-center sm:group-data-scrolled:justify-between">
     <a href="/" aria-label="Retour à l'accueil" class="flex items-center gap-1 group-data-scrolled:flex sm:hidden">
-      <Icon name="logo" class="h-12 w-12 fill-neutral-800 text-primary hover:text-primary-400" />
+      <Icon name="logo" class="text-primary hover:text-primary-400 h-12 w-12 fill-neutral-800" />
       <hgroup class="font-heading uppercase">
         <h3 class="text-sm leading-none text-neutral-800">Traditions</h3>
         <h4 class="text-xs leading-none text-neutral-500">Ancestrales</h4>
@@ -58,7 +58,7 @@ export type Props = { class: ClassValue };
           <Icon
             aria-label="Retour à l'accueil"
             name="logo"
-            class="mx-8 h-20 w-20 fill-neutral-800 text-primary hover:text-primary-400 group-data-scrolled:hidden"
+            class="text-primary hover:text-primary-400 mx-8 h-20 w-20 fill-neutral-800 group-data-scrolled:hidden"
           />
         </a>
       </li>
