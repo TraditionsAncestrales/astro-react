@@ -16,7 +16,11 @@ export type TheTestimoniesProps = Props;
 ---
 
 <Section class="relative" {...rest}>
-  {image && <Image {...image} breakpoints={[320]} sizes="100vw" class="absolute inset-0 h-full scale-105 blur-sm" />}
+  {
+    image && (
+      <Image {...image} breakpoints={[320]} sizes="100vw" layout="fullWidth" class="absolute inset-0 h-full scale-105 object-top blur-sm" />
+    )
+  }
   <Title slot="header" text="Témoignages" class="z-10" />
   <div class="relative h-[28rem] w-full">
     <TheTestimoniesCarousel client:visible {items} />
